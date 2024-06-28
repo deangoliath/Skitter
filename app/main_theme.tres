@@ -1,0 +1,11 @@
+[gd_resource type="Theme" load_steps=3 format=3 uid="uid://clm5032bs8h16"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_y3n2b"]
+bg_color = Color(0.842026, 1.82897e-06, 0.497056, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_q7ip6"]
+bg_color = Color(1, 1, 1, 1)
+
+[resource]
+VScrollBar/styles/grabber = SubResource("StyleBoxFlat_y3n2b")
+VScrollBar/styles/scroll = SubResource("StyleBoxFlat_q7ip6")

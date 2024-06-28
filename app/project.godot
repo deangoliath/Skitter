@@ -13,7 +13,16 @@ config_version=5
 config/name="OpenLynx"
 run/main_scene="res://scenes/main.tscn"
 config/features=PackedStringArray("4.2", "GL Compatibility")
+run/low_processor_mode=true
 config/icon="res://icon.svg"
+
+[display]
+
+window/size/viewport_width=720
+window/size/viewport_height=1280
+window/stretch/mode="canvas_items"
+window/stretch/aspect="expand"
+window/handheld/orientation=1
 
 [editor_plugins]
 
@@ -23,3 +32,4 @@ enabled=PackedStringArray("res://addons/HTTPManager/plugin.cfg")
 
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
+textures/vram_compression/import_etc2_astc=true

@@ -1,40 +1,43 @@
 from google.transit import gtfs_realtime_pb2
 from google.protobuf.json_format import MessageToDict
 from flask import Flask, jsonify
-from datetime import datetime, timedelta
+from datetime import datetime
 import pytz 
 import requests
 import threading
 import time
 
 # Variables and Data
-lastfetch = 0
-lastfeed = {"VehiclePositions": {"header": {"timestamp": 0}}, "TripUpdates": {}, "ServiceAlerts": {}}
-feed_refresh = 30 # lynx live feed updates every 30 seconds
+host_port = 5000
+host_address = "0.0.0.0"
+
+lastFetch = 0
+lastFeed = {"VehiclePositions": {"header": {"timestamp": 0}}, "TripUpdates": {}, "ServiceAlerts": {}}
+feedRefresh = 30 # lynx live feed updates every 30 seconds
 
 # Define Functions
 
 def get_feed(): # make sure to add a cache for every 30 seconds
-  return lastfeed
+  return lastFeed
 
 # Fetch Data Thread
 def fetchdata_thread():
-  global lastfeed
-  global lastfetch
+  global lastFeed
+  global lastFetch
   while True:
     print("Fetching Latest GTFS Data")
-    lastfetch = datetime.now(pytz.timezone('America/New_York'))
+    lastFetch = datetime.now(pytz.timezone('America/New_York'))
     feed = gtfs_realtime_pb2.FeedMessage()
     response = requests.get('http://gtfsrt.golynx.com/gtfsrt/GTFS_VehiclePositions.pb')
     feed.ParseFromString(response.content)
-    lastfeed["VehiclePositions"] = MessageToDict(feed)
+    lastFeed["VehiclePositions"] = MessageToDict(feed)
     response = requests.get('http://gtfsrt.golynx.com/gtfsrt/GTFS_TripUpdates.pb')
     feed.ParseFromString(response.content)
-    lastfeed["TripUpdates"] = MessageToDict(feed)
+    lastFeed["TripUpdates"] = MessageToDict(feed)
     response = requests.get('http://gtfsrt.golynx.com/gtfsrt/GTFS_ServiceAlerts.pb')
     feed.ParseFromString(response.content)
-    lastfeed["ServiceAlerts"] = MessageToDict(feed)
-    time.sleep(feed_refresh)
+    lastFeed["ServiceAlerts"] = MessageToDict(feed)
+    time.sleep(feedRefresh)
 
 def seconds_to_next_timesync():
   if datetime.now().second < 30:
@@ -59,4 +62,4 @@ def handle_get_feed():
 if __name__ == '__main__':
   fetchdatathread = threading.Thread(target=fetchdata_thread)
   fetchdatathread.start()
-  app.run(debug=False)
+  app.run(debug=False, host=host_address, port=host_port)
