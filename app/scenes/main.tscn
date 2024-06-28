@@ -1,0 +1,41 @@
+[gd_scene load_steps=4 format=3 uid="uid://d4ngqa3sdmho5"]
+
+[ext_resource type="Script" path="res://scenes/main.gd" id="1_gku82"]
+[ext_resource type="Script" path="res://addons/HTTPManager/classes/HTTPManager.gd" id="3_vdrhb"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_conly"]
+bg_color = Color(1, 1, 1, 1)
+
+[node name="Main" type="Node"]
+script = ExtResource("1_gku82")
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Background" type="Panel" parent="Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_conly")
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="GridContainer" type="GridContainer" parent="Control/ScrollContainer"]
+layout_mode = 2
+
+[node name="HTTPManager" type="Node" parent="."]
+script = ExtResource("3_vdrhb")

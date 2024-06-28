@@ -1,0 +1,50 @@
+[gd_scene load_steps=2 format=3 uid="uid://bw3rmr3qnubqa"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_b084n"]
+bg_color = Color(0.82606, 0.82606, 0.82606, 1)
+
+[node name="Control" type="Control"]
+custom_minimum_size = Vector2(1152, 50)
+layout_mode = 3
+anchor_right = 1.0
+anchor_bottom = 0.0771605
+grow_horizontal = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="Background" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_b084n")
+
+[node name="label_Bus" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.0390625
+anchor_bottom = 0.25
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "BUS 0"
+metadata/_edit_use_anchors_ = true
+
+[node name="label_Route" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.304348
+anchor_right = 0.256076
+anchor_bottom = 0.554348
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "LYNX CENTRAL STATION/DOWNTOWN"
+metadata/_edit_use_anchors_ = true
+
+[node name="label_Coords" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.608696
+anchor_right = 0.0277778
+anchor_bottom = 0.858696
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "0, -0"
+metadata/_edit_use_anchors_ = true
