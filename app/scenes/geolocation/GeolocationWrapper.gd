@@ -193,7 +193,7 @@ func _on_authorization_changed(status:int):
 func _on_location_update(location_data:Dictionary):
 	var location_object:Location = Location.new(location_data)
 	_on_log("location update??")
-	_on_log(str(location_data))
+	_on_log(str(location_data)) # location data prints here for some reason took so long to find
 	emit_signal("location_update", location_object)
 	
 func _on_heading_update(heading_data:Dictionary):

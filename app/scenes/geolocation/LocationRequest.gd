@@ -63,5 +63,5 @@ func _listen_for_location():
 	if is_resolved:
 		return # request already resolved with error
 	
-	is_resolved = true	
+	is_resolved = true
 	emit_signal("location_update", location) # send location, so send null

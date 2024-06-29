@@ -119,5 +119,5 @@ func _on_btn_location_pressed():
 			set_location_output("Error: " + geolocation_api.geolocation_error_codes.keys()[request.error-1])
 		return
 	# show location 
-	$Control/panel_Center/content_Explore/Label.text = location.to_string()
+	$Control/panel_Center/content_Explore/Label.text = location._to_string()
 
