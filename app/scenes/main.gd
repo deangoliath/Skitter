@@ -19,7 +19,9 @@ func _ready():
 		geolocation_api.heading_update.connect(_on_heading_update, 0)
 		geolocation_api.set_failure_timeout(5) #optional
 		geolocation_api.set_debug_log_signal(true) #optional
-	
+	if Engine.has_singleton("Geolocation"):
+		var singleton = Engine.get_singleton("Geolocation")
+		singleton.helloWorld()
 	while true:
 		await get_tree().create_timer(5).timeout
 		$HTTPManager.job(
