@@ -18,10 +18,18 @@ var lastFeed = {"VehiclePositions": {"header": {"timezone": 0}, "entity": []}}
 
 var geolocation_api:GeolocationWrapper
 var location_watcher:LocationWatcher
+var lastKnownLocation
 
 func _ready():
+	load_data()
+	if lastKnownLocation != null:
+		var map = $Control/panel_Center/content_Explore/mosaic/VBoxContainer/SubViewportContainer/SubViewport/Map
+		map.latitude = lastKnownLocation["latitude"]
+		map.longitude = lastKnownLocation["longitude"]
+		map.zoom = 20
+	
 	geolocation_api= get_node("/root/GeolocationWrapper")
-
+	
 	if geolocation_api.supported:
 		geolocation_api.authorization_changed.connect(_on_authorization_changed, 0)
 		geolocation_api.error.connect(_on_error, 0)
@@ -153,14 +161,17 @@ func _on_btn_location_pressed():
 			set_location_output("Error: " + geolocation_api.geolocation_error_codes.keys()[request.error-1])
 		return
 	# show location
-	var zoom = 16
-	var tile = deg2tile(zoom, location["longitude"], location["latitude"])
+	#var tile = deg2tile(zoom, location["longitude"], location["latitude"])
+	lastKnownLocation = location
+	var map = $Control/panel_Center/content_Explore/mosaic/VBoxContainer/SubViewportContainer/SubViewport/Map
+	map.latitude = location["latitude"]
+	map.longitude = location["longitude"]
+	map.zoom = 20
 	$Control/panel_Center/content_Explore/Label.text = location._to_string()
-	$HTTPManager.job(
-		"https://a.tile.openstreetmap.org/"+str(zoom)+"/"+str(tile[0])+"/"+str(tile[1])+".png"
-	).on_success_set( 
-		$Control/panel_Center/content_Explore/tr_MapTile, "texture"
-	).mime("image/texture").cache(false).on_success(
-		func( _response ): print("download finished, not from cache")
-	).fetch()
 
+func _on_vs_zoom_value_changed(value):
+	var map = $Control/panel_Center/content_Explore/mosaic/VBoxContainer/SubViewportContainer/SubViewport/Map
+	map.zoom = value
+	if lastKnownLocation != null:
+		map.latitude = lastKnownLocation["latitude"]
+		map.longitude = lastKnownLocation["longitude"]

@@ -11,6 +11,7 @@ config_version=5
 [application]
 
 config/name="OpenLynx"
+config/version="2024.06.30-1"
 run/main_scene="res://scenes/main.tscn"
 config/features=PackedStringArray("4.2", "GL Compatibility")
 run/low_processor_mode=true
@@ -31,7 +32,11 @@ window/handheld/orientation=1
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/HTTPManager/plugin.cfg")
+enabled=PackedStringArray("res://addons/HTTPManager/plugin.cfg", "res://addons/map_tile_provider/plugin.cfg")
+
+[input_devices]
+
+pointing/android/enable_pan_and_scale_gestures=true
 
 [rendering]
 
