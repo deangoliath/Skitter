@@ -1,8 +1,19 @@
 extends Node
 
 var transit_data = {"fare_attributes": {}, "fare_rules": {}, "routes": {}, "shapes": {}, "stops": {}, "stop_times": {}, "trips": {}}
+var route_data = { # only here for testing. get data from 
+	"14717": {"route_short_name": "42", "route_long_name": "INTL DR/ORLANDO INTL  AIRPORT", "route_type": "3"},
+	"14673": {"route_short_name": "8", "route_long_name": "W. OAK RIDGE RD/INTL. DR", "route_type": "3"},
+	"14711": {"route_short_name": "37", "route_long_name": "PINE HILLS/FLORIDA MALL", "route_type": "3"},
+	"14691": {"route_short_name": "18", "route_long_name": "S. ORANGE AVE/KISSIMMEE", "route_type": "3"},
+	"14750": {"route_short_name": "311", "route_long_name": "EAST/WEST FAST LINK", "route_type": "3"},
+	"14694": {"route_short_name": "21", "route_long_name": "RALEIGH ST/KIRKMAN RD/ UNIV STUDIOS", "route_type": "3"},
+	"14713": {"route_short_name": "40", "route_long_name": "AMERICANA BLVD/UNIVERSAL ORLANDO", "route_type": "3"},
+	"14709": {"route_short_name": "350", "route_long_name": "ORLANDO/DEST. PKY/DISNEY SPG EXP", "route_type": "3"},
+	"14731": {"route_short_name": "56", "route_long_name": "W. U.S. 192/MAGIC KINGDOM", "route_type": "3"}
+	}
 
-var host = "http://127.0.0.1:5000"
+var host = "http://149.130.216.105:5000/"
 var lastFeed = {"VehiclePositions": {"header": {"timezone": 0}, "entity": []}}
 
 var geolocation_api:GeolocationWrapper
@@ -23,7 +34,7 @@ func _ready():
 		var singleton = Engine.get_singleton("Geolocation")
 		singleton.helloWorld()
 	while true:
-		await get_tree().create_timer(5).timeout
+		await get_tree().create_timer(1).timeout # ideally 15
 		$HTTPManager.job(
 		host+"/get_feed/"
 		).on_success(
@@ -31,13 +42,28 @@ func _ready():
 		).on_failure(
 			func( _response ): print("Failure to GET_FEED")
 		).fetch()
+		
 		if lastFeed["VehiclePositions"]["entity"].size() > 0:
-			for child in $Control/panel_Center/ScrollContainer/GridContainer.get_children():
-				child.queue_free()
+			var vec = lastFeed["VehiclePositions"]["entity"]
+			vec.resize(8)
+			lastFeed["VehiclePositions"]["entity"] = vec
 			for entity in lastFeed["VehiclePositions"]["entity"]:
-				var newinfo = preload("res://scenes/vehicle.tscn").instantiate()
-				newinfo.get_node("label_Coords").text = str(entity["vehicle"]["position"]["latitude"])+", "+str(entity["vehicle"]["position"]["longitude"])
-				$Control/panel_Center/ScrollContainer/GridContainer.add_child(newinfo)
+				var routeId = entity["vehicle"]["trip"]["routeId"]
+				var infonode
+				if $Control/panel_Center/content_Routes/ScrollContainer/GridContainer.has_node(entity["id"]):
+					infonode = $Control/panel_Center/content_Routes/ScrollContainer/GridContainer.get_node(entity["id"])
+				else:
+					infonode = preload("res://scenes/vehicle.tscn").instantiate()
+					infonode.name = entity["id"]
+					$Control/panel_Center/content_Routes/ScrollContainer/GridContainer.add_child(infonode)
+				infonode.get_node("HBoxContainer/Control2/label_Coords").text = str(entity["vehicle"]["position"]["latitude"])+", "+str(entity["vehicle"]["position"]["longitude"])
+				
+				if route_data.has(routeId):
+					infonode.get_node("HBoxContainer/Control/label_Route").text = route_data[routeId]["route_short_name"]
+					infonode.get_node("HBoxContainer/Control2/label_RouteB").text = route_data[routeId]["route_long_name"]
+					infonode.get_node("HBoxContainer/Control2/label_RouteA").text = "Vehicle "+entity["id"]
+				else:
+					print(routeId)
 
 
 func _on_authorization_changed(status:int):

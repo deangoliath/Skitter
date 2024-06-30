@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://d4ngqa3sdmho5"]
+[gd_scene load_steps=21 format=3 uid="uid://d4ngqa3sdmho5"]
 
 [ext_resource type="Script" path="res://scenes/main.gd" id="1_gku82"]
 [ext_resource type="Texture2D" uid="uid://nbahugvq5a1j" path="res://assets/icons/interface/settings.png" id="3_ujg57"]
@@ -38,6 +38,15 @@ bg_color = Color(0.169245, 0.169245, 0.169245, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_w2v6s"]
 bg_color = Color(0.140447, 0.140447, 0.140447, 0.956863)
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+expand_margin_left = 20.0
+expand_margin_right = 20.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1vlja"]
+bg_color = Color(0.12103, 0.12103, 0.12103, 0.964706)
 corner_radius_top_left = 15
 corner_radius_top_right = 15
 corner_radius_bottom_right = 15
@@ -135,20 +144,6 @@ grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_p71hb")
 metadata/_edit_use_anchors_ = true
 
-[node name="ScrollContainer" type="ScrollContainer" parent="Control/panel_Center"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme = ExtResource("4_v2lg7")
-
-[node name="GridContainer" type="GridContainer" parent="Control/panel_Center/ScrollContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
 [node name="content_Explore" type="Control" parent="Control/panel_Center"]
 layout_mode = 1
 anchors_preset = 15
@@ -234,12 +229,29 @@ anchor_top = 0.0201005
 anchor_right = 0.944444
 anchor_bottom = 0.140704
 grow_horizontal = 2
-focus_mode = 0
 theme_override_font_sizes/font_size = 32
 theme_override_styles/normal = SubResource("StyleBoxFlat_w2v6s")
+theme_override_styles/focus = SubResource("StyleBoxFlat_1vlja")
 placeholder_text = "Where to?"
 right_icon = ExtResource("5_qgg65")
 metadata/_edit_use_anchors_ = true
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Control/panel_Center/content_Routes"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.168844
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("4_v2lg7")
+metadata/_edit_use_anchors_ = true
+
+[node name="GridContainer" type="GridContainer" parent="Control/panel_Center/content_Routes/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/v_separation = 3
 
 [node name="content_Map" type="Control" parent="Control/panel_Center"]
 visible = false
