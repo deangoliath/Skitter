@@ -1,7 +1,7 @@
 extends Node
 
 var transit_data = {"fare_attributes": {}, "fare_rules": {}, "routes": {}, "shapes": {}, "stops": {}, "stop_times": {}, "trips": {}}
-var route_data = { # only here for testing. get data from 
+var route_data = { # only here for testing. get data from gtfsrt.golynx.com/gtfsrt
 	"14717": {"route_short_name": "42", "route_long_name": "INTL DR/ORLANDO INTL  AIRPORT", "route_type": "3"},
 	"14673": {"route_short_name": "8", "route_long_name": "W. OAK RIDGE RD/INTL. DR", "route_type": "3"},
 	"14711": {"route_short_name": "37", "route_long_name": "PINE HILLS/FLORIDA MALL", "route_type": "3"},
@@ -13,7 +13,7 @@ var route_data = { # only here for testing. get data from
 	"14731": {"route_short_name": "56", "route_long_name": "W. U.S. 192/MAGIC KINGDOM", "route_type": "3"}
 	}
 
-var host = "http://149.130.216.105:5000/"
+var host = "http://149.130.216.105:5000/" # feel free to use the data provided please do not abuse
 var lastFeed = {"VehiclePositions": {"header": {"timezone": 0}, "entity": []}}
 
 var geolocation_api:GeolocationWrapper
@@ -34,7 +34,7 @@ func _ready():
 		var singleton = Engine.get_singleton("Geolocation")
 		singleton.helloWorld()
 	while true:
-		await get_tree().create_timer(1).timeout # ideally 15
+		await get_tree().create_timer(1).timeout # ideally every half minute plus one
 		$HTTPManager.job(
 		host+"/get_feed/"
 		).on_success(
@@ -62,9 +62,17 @@ func _ready():
 					infonode.get_node("HBoxContainer/Control/label_Route").text = route_data[routeId]["route_short_name"]
 					infonode.get_node("HBoxContainer/Control2/label_RouteB").text = route_data[routeId]["route_long_name"]
 					infonode.get_node("HBoxContainer/Control2/label_RouteA").text = "Vehicle "+entity["id"]
-				else:
-					print(routeId)
+				#else:
+				#	print(routeId)
 
+func deg2tile(zoom=0.0, lon=0.0, lat=0.0):
+	return([floor(((lon + 180) / 360) * pow(2, zoom)), floor((1 - log(tan(deg_to_rad(lat)) + 1 / cos(deg_to_rad(lat))) / PI) /2 * pow(2, zoom))])
+
+func load_data():
+	pass
+
+func save_data():
+	pass
 
 func _on_authorization_changed(status:int):
 	glog("+signal authorization changed: " + str(status))
@@ -144,6 +152,15 @@ func _on_btn_location_pressed():
 		else:
 			set_location_output("Error: " + geolocation_api.geolocation_error_codes.keys()[request.error-1])
 		return
-	# show location 
+	# show location
+	var zoom = 16
+	var tile = deg2tile(zoom, location["longitude"], location["latitude"])
 	$Control/panel_Center/content_Explore/Label.text = location._to_string()
+	$HTTPManager.job(
+		"https://a.tile.openstreetmap.org/"+str(zoom)+"/"+str(tile[0])+"/"+str(tile[1])+".png"
+	).on_success_set( 
+		$Control/panel_Center/content_Explore/tr_MapTile, "texture"
+	).mime("image/texture").cache(false).on_success(
+		func( _response ): print("download finished, not from cache")
+	).fetch()
 

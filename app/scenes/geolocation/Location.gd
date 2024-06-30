@@ -21,8 +21,8 @@ func _init(location_data:Dictionary):
 	#latitude = float(location_data["latitude_string"])
 	#longitude = float(location_data["longitude_string"])
 	
-	latitude = location_data["latitude"]
-	longitude = location_data["longitude"]
+	latitude = float(location_data["latitude"])
+	longitude = float(location_data["longitude"])
 	
 	accuracy = location_data["accuracy"]
 	altitude = location_data["altitude"]

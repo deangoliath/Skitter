@@ -166,6 +166,7 @@ stretch_mode = 1
 metadata/_edit_use_anchors_ = true
 
 [node name="Label" type="Label" parent="Control/panel_Center/content_Explore"]
+visible = false
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
@@ -178,6 +179,7 @@ autowrap_mode = 1
 metadata/_edit_use_anchors_ = true
 
 [node name="Label2" type="Label" parent="Control/panel_Center/content_Explore"]
+visible = false
 layout_mode = 1
 anchors_preset = -1
 anchor_top = 0.261306
@@ -189,6 +191,16 @@ theme_override_font_sizes/font_size = 12
 text = "glog"
 autowrap_mode = 1
 metadata/_edit_use_anchors_ = true
+
+[node name="tr_MapTile" type="TextureRect" parent="Control/panel_Center/content_Explore"]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+stretch_mode = 6
 
 [node name="btn_Location" type="Button" parent="Control/panel_Center/content_Explore"]
 custom_minimum_size = Vector2(50, 50)
@@ -221,7 +233,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="LineEdit" type="LineEdit" parent="Control/panel_Center/content_Routes"]
+[node name="le_Navigate" type="LineEdit" parent="Control/panel_Center/content_Routes"]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.0555556
