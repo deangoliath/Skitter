@@ -15,16 +15,16 @@ func _construct_url(args: Dictionary) -> String:
 
 	match self.map_style:
 		MapType.DARK_OPENLYNX:
-			url = "https://tile.jawg.io/511b2a44-abfc-4666-8092-55cac07a0a35/{zoom}/{x}/{y}.png?access-token="+token
+			url = "https://tile.jawg.io/511b2a44-abfc-4666-8092-55cac07a0a35/{zoom}/{x}/{y}.png?access-token="+token+"&lang={lang}"
 			args["format"] = MapTile.Format.PNG
 		MapType.STREET:
-			url = "https://tile.jawg.io/jawg-streets/{zoom}/{x}/{y}.png?access-token="+token
+			url = "https://tile.jawg.io/jawg-streets/{zoom}/{x}/{y}.png?access-token="+token+"&lang={lang}"
 			args["format"] = MapTile.Format.PNG
 		MapType.DARK:
-			url = "https://tile.jawg.io/jawg-dark/{zoom}/{x}/{y}.png?access-token="+token
+			url = "https://tile.jawg.io/jawg-dark/{zoom}/{x}/{y}.png?access-token="+token+"&lang={lang}"
 			args["format"] = MapTile.Format.PNG
 		MapType.LIGHT:
-			url = "https://tile.jawg.io/jawg-light/{zoom}/{x}/{y}.png?access-token="+token
+			url = "https://tile.jawg.io/jawg-light/{zoom}/{x}/{y}.png?access-token="+token+"&lang={lang}"
 			args["format"] = MapTile.Format.PNG
 		_:
 			url = "invalid://server {server}/quad {quad}/x {x}/y {y}/zoom {zoom}/lang {lang}/api {api}"

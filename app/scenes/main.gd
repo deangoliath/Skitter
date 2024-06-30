@@ -21,6 +21,8 @@ var location_watcher:LocationWatcher
 var lastKnownLocation
 
 func _ready():
+	#var map = $Control/panel_Center/content_Explore/mosaic/VBoxContainer/SubViewportContainer/SubViewport/Map
+	#map._place_sprite()
 	load_data()
 	if lastKnownLocation != null:
 		var map = $Control/panel_Center/content_Explore/mosaic/VBoxContainer/SubViewportContainer/SubViewport/Map

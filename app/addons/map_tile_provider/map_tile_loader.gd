@@ -76,7 +76,7 @@ func _ready():
 	# force the creation of the correct number of HTTPRequests
 	concurrent_requests = concurrent_requests
 
-
+var n = 0
 func _process(delta):
 	var complete := []
 	for idx in len(_local):
@@ -87,7 +87,11 @@ func _process(delta):
 				pass
 			ResourceLoader.THREAD_LOAD_LOADED:
 				_outstanding_requests -= 1
-				tile_loaded.emit(OK, ResourceLoader.load_threaded_get(cache_path))
+				var ca = ResourceLoader.load_threaded_get(cache_path)
+				#if n<100:
+					#print(ca["coords"])
+					#n+=1
+				tile_loaded.emit(OK, ca)
 				complete.push_front(idx)
 				_check_queued_loads()
 			_:
