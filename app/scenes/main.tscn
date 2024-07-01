@@ -667,6 +667,20 @@ theme_override_font_sizes/font_size = 24
 text = "Other Settings"
 horizontal_alignment = 1
 
+[node name="cb_MapsMobileData" type="CheckButton" parent="Control/panel_Center/content_Settings/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+disabled = true
+button_pressed = true
+text = "Download Maps on Mobile Data"
+
+[node name="cb_TransitInfoMobileData" type="CheckButton" parent="Control/panel_Center/content_Settings/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+disabled = true
+button_pressed = true
+text = "Download Transit Info on Mobile Data"
+
 [node name="cb_ShowFavorites" type="CheckButton" parent="Control/panel_Center/content_Settings/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 0

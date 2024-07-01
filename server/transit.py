@@ -74,11 +74,11 @@ def get_shapes():
 
 # Fetch Data Thread
 def fetchdata_thread():
+    if not os.path.exists("transit_server_data/transit_data/lynx"):
+            os.makedirs("transit_server_data/transit_data/lynx")
     response = requests.get("http://gtfsrt.golynx.com/gtfsrt/google_transit.zip")
     with open('transit_server_data/transit_data.zip', 'wb') as f:
         f.write(response.content)
-    if not os.path.exists("transit_server_data/transit_data/lynx"):
-        os.makedirs("transit_server_data/transit_data/lynx")
     with zipfile.ZipFile("transit_server_data/transit_data.zip", 'r') as zip_ref:
         zip_ref.extractall("transit_server_data/transit_data/lynx")
     try:
