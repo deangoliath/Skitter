@@ -464,6 +464,23 @@ expand_icon = true
 metadata/_edit_group_ = true
 metadata/_edit_use_anchors_ = true
 
+[node name="tr_Error" type="TextureRect" parent="Control/panel_Center/content_Routes/VBoxContainer"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 10
+texture = ExtResource("13_88b2i")
+stretch_mode = 5
+
+[node name="label_Error" type="Label" parent="Control/panel_Center/content_Routes/VBoxContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 6
+theme_override_font_sizes/font_size = 32
+text = "COULD NOT RETRIEVE TRANSIT DATA
+CHECK INTERNET CONNECTION"
+horizontal_alignment = 1
+
 [node name="ScrollContainer" type="ScrollContainer" parent="Control/panel_Center/content_Routes/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3

@@ -3,7 +3,7 @@ extends Node
 var transit_data = {"fare_attributes": {}, "fare_rules": {}, "routes": {}, "shapes": {}, "stops": {}, "stop_times": {}, "trips": {}}
 
 var host = "http://149.130.216.105:5000" # feel free to use the data provided please do not abuse
-var lastFeed = {"VehiclePositions": {"header": {"timezone": 0}, "entity": []}}
+var lastFeed
 
 var geolocation_api:GeolocationWrapper
 var location_watcher:LocationWatcher
@@ -56,28 +56,36 @@ func _ready():
 			func( _response ): print("Failure to GET_FEED")
 		).fetch()
 		
-		if lastFeed["VehiclePositions"]["entity"].size() > 0:
-			var vec = lastFeed["VehiclePositions"]["entity"]
-			vec.resize(8)
-			lastFeed["VehiclePositions"]["entity"] = vec
-			for entity in lastFeed["VehiclePositions"]["entity"]:
-				if entity != null:
-					var routeId = entity["vehicle"]["trip"]["routeId"]
-					var infonode
-					if $Control/panel_Center/content_Routes/VBoxContainer/ScrollContainer/GridContainer.has_node(entity["id"]):
-						infonode = $Control/panel_Center/content_Routes/VBoxContainer/ScrollContainer/GridContainer.get_node(entity["id"])
-					else:
-						infonode = preload("res://scenes/vehicle.tscn").instantiate()
-						infonode.name = entity["id"]
-						$Control/panel_Center/content_Routes/VBoxContainer/ScrollContainer/GridContainer.add_child(infonode)
-					infonode.get_node("HBoxContainer/Control2/label_Coords").text = str(entity["vehicle"]["position"]["latitude"])+", "+str(entity["vehicle"]["position"]["longitude"])
-					
-					if transit_data["routes"].has(routeId):
-						infonode.get_node("HBoxContainer/Control/label_Route").text = transit_data["routes"][routeId]["route_short_name"]
-						infonode.get_node("HBoxContainer/Control2/label_RouteB").text = transit_data["routes"][routeId]["route_long_name"]
-						infonode.get_node("HBoxContainer/Control2/label_RouteA").text = "Vehicle "+entity["id"]
-					#else:
-					#	print(routeId)
+		if lastFeed != null:
+			#$Control/panel_Center/content_Routes/VBoxContainer/ScrollContainer.visible = true
+			$Control/panel_Center/content_Routes/VBoxContainer/label_Error.visible = false
+			$Control/panel_Center/content_Routes/VBoxContainer/tr_Error.visible = false
+			if lastFeed["VehiclePositions"]["entity"].size() > 0:
+				var vec = lastFeed["VehiclePositions"]["entity"]
+				vec.resize(8)
+				lastFeed["VehiclePositions"]["entity"] = vec
+				for entity in lastFeed["VehiclePositions"]["entity"]:
+					if entity != null:
+						var routeId = entity["vehicle"]["trip"]["routeId"]
+						var infonode
+						if $Control/panel_Center/content_Routes/VBoxContainer/ScrollContainer/GridContainer.has_node(entity["id"]):
+							infonode = $Control/panel_Center/content_Routes/VBoxContainer/ScrollContainer/GridContainer.get_node(entity["id"])
+						else:
+							infonode = preload("res://scenes/vehicle.tscn").instantiate()
+							infonode.name = entity["id"]
+							$Control/panel_Center/content_Routes/VBoxContainer/ScrollContainer/GridContainer.add_child(infonode)
+						infonode.get_node("HBoxContainer/Control2/label_Coords").text = str(entity["vehicle"]["position"]["latitude"])+", "+str(entity["vehicle"]["position"]["longitude"])
+						
+						if transit_data["routes"].has(routeId):
+							infonode.get_node("HBoxContainer/Control/label_Route").text = transit_data["routes"][routeId]["route_short_name"]
+							infonode.get_node("HBoxContainer/Control2/label_RouteB").text = transit_data["routes"][routeId]["route_long_name"]
+							infonode.get_node("HBoxContainer/Control2/label_RouteA").text = "Vehicle "+entity["id"]
+						#else:
+						#	print(routeId)
+		else:
+			#$Control/panel_Center/content_Routes/VBoxContainer/ScrollContainer.visible = false
+			$Control/panel_Center/content_Routes/VBoxContainer/label_Error.visible = true
+			$Control/panel_Center/content_Routes/VBoxContainer/tr_Error.visible = true
 
 func deg2tile(zoom=0.0, lon=0.0, lat=0.0):
 	return([floor(((lon + 180) / 360) * pow(2, zoom)), floor((1 - log(tan(deg_to_rad(lat)) + 1 / cos(deg_to_rad(lat))) / PI) /2 * pow(2, zoom))])
