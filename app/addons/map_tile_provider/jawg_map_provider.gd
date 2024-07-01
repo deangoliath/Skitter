@@ -14,7 +14,7 @@ func _construct_url(args: Dictionary) -> String:
 	var url: String
 
 	match self.map_style:
-		MapType.DARK_OPENLYNX:
+		MapType.SATELLITE:
 			url = "https://tile.jawg.io/511b2a44-abfc-4666-8092-55cac07a0a35/{zoom}/{x}/{y}.png?access-token="+token+"&lang={lang}"
 			args["format"] = MapTile.Format.PNG
 		MapType.STREET:

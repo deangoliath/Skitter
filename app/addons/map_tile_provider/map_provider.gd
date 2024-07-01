@@ -14,7 +14,7 @@ enum MapType {
 
 
 @export var language_code := "en"
-@export var map_style := MapType.DARK_OPENLYNX
+@export var map_style := MapType.SATELLITE
 
 
 func _create_tile_parameters_for_indices(x: int, y: int, zoom: int) -> Dictionary:

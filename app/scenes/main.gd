@@ -1,19 +1,8 @@
 extends Node
 
 var transit_data = {"fare_attributes": {}, "fare_rules": {}, "routes": {}, "shapes": {}, "stops": {}, "stop_times": {}, "trips": {}}
-var route_data = { # only here for testing. get data from gtfsrt.golynx.com/gtfsrt
-	"14717": {"route_short_name": "42", "route_long_name": "INTL DR/ORLANDO INTL  AIRPORT", "route_type": "3"},
-	"14673": {"route_short_name": "8", "route_long_name": "W. OAK RIDGE RD/INTL. DR", "route_type": "3"},
-	"14711": {"route_short_name": "37", "route_long_name": "PINE HILLS/FLORIDA MALL", "route_type": "3"},
-	"14691": {"route_short_name": "18", "route_long_name": "S. ORANGE AVE/KISSIMMEE", "route_type": "3"},
-	"14750": {"route_short_name": "311", "route_long_name": "EAST/WEST FAST LINK", "route_type": "3"},
-	"14694": {"route_short_name": "21", "route_long_name": "RALEIGH ST/KIRKMAN RD/ UNIV STUDIOS", "route_type": "3"},
-	"14713": {"route_short_name": "40", "route_long_name": "AMERICANA BLVD/UNIVERSAL ORLANDO", "route_type": "3"},
-	"14709": {"route_short_name": "350", "route_long_name": "ORLANDO/DEST. PKY/DISNEY SPG EXP", "route_type": "3"},
-	"14731": {"route_short_name": "56", "route_long_name": "W. U.S. 192/MAGIC KINGDOM", "route_type": "3"}
-	}
 
-var host = "http://149.130.216.105:5000/" # feel free to use the data provided please do not abuse
+var host = "http://149.130.216.105:5000" # feel free to use the data provided please do not abuse
 var lastFeed = {"VehiclePositions": {"header": {"timezone": 0}, "entity": []}}
 
 var geolocation_api:GeolocationWrapper
@@ -21,11 +10,25 @@ var location_watcher:LocationWatcher
 var lastKnownLocation
 
 func _ready():
-	#var map = $Control/panel_Center/content_Explore/mosaic/VBoxContainer/SubViewportContainer/SubViewport/Map
+	#var map = $Control/panel_Center/content_Explore/Map/VBoxContainer/SubViewportContainer/SubViewport/Map
 	#map._place_sprite()
+	$HTTPManager.job(
+		host+"/get_feed/"
+		).on_success(
+			func( _response ): lastFeed = _response.fetch()
+		).on_failure(
+			func( _response ): print("Failure to GET_FEED")
+		).fetch()
+	$HTTPManager.job(
+		host+"/get_routes/"
+		).on_success(
+			func( _response ): transit_data["routes"] = _response.fetch();
+		).on_failure(
+			func( _response ): print("Failure to GET_ROUTES")
+		).fetch()
 	load_data()
 	if lastKnownLocation != null:
-		var map = $Control/panel_Center/content_Explore/mosaic/VBoxContainer/SubViewportContainer/SubViewport/Map
+		var map = $Control/panel_Center/content_Explore/Map/VBoxContainer/SubViewportContainer/SubViewport/Map
 		map.latitude = lastKnownLocation["latitude"]
 		map.longitude = lastKnownLocation["longitude"]
 		map.zoom = 20
@@ -58,22 +61,23 @@ func _ready():
 			vec.resize(8)
 			lastFeed["VehiclePositions"]["entity"] = vec
 			for entity in lastFeed["VehiclePositions"]["entity"]:
-				var routeId = entity["vehicle"]["trip"]["routeId"]
-				var infonode
-				if $Control/panel_Center/content_Routes/ScrollContainer/GridContainer.has_node(entity["id"]):
-					infonode = $Control/panel_Center/content_Routes/ScrollContainer/GridContainer.get_node(entity["id"])
-				else:
-					infonode = preload("res://scenes/vehicle.tscn").instantiate()
-					infonode.name = entity["id"]
-					$Control/panel_Center/content_Routes/ScrollContainer/GridContainer.add_child(infonode)
-				infonode.get_node("HBoxContainer/Control2/label_Coords").text = str(entity["vehicle"]["position"]["latitude"])+", "+str(entity["vehicle"]["position"]["longitude"])
-				
-				if route_data.has(routeId):
-					infonode.get_node("HBoxContainer/Control/label_Route").text = route_data[routeId]["route_short_name"]
-					infonode.get_node("HBoxContainer/Control2/label_RouteB").text = route_data[routeId]["route_long_name"]
-					infonode.get_node("HBoxContainer/Control2/label_RouteA").text = "Vehicle "+entity["id"]
-				#else:
-				#	print(routeId)
+				if entity != null:
+					var routeId = entity["vehicle"]["trip"]["routeId"]
+					var infonode
+					if $Control/panel_Center/content_Routes/VBoxContainer/ScrollContainer/GridContainer.has_node(entity["id"]):
+						infonode = $Control/panel_Center/content_Routes/VBoxContainer/ScrollContainer/GridContainer.get_node(entity["id"])
+					else:
+						infonode = preload("res://scenes/vehicle.tscn").instantiate()
+						infonode.name = entity["id"]
+						$Control/panel_Center/content_Routes/VBoxContainer/ScrollContainer/GridContainer.add_child(infonode)
+					infonode.get_node("HBoxContainer/Control2/label_Coords").text = str(entity["vehicle"]["position"]["latitude"])+", "+str(entity["vehicle"]["position"]["longitude"])
+					
+					if transit_data["routes"].has(routeId):
+						infonode.get_node("HBoxContainer/Control/label_Route").text = transit_data["routes"][routeId]["route_short_name"]
+						infonode.get_node("HBoxContainer/Control2/label_RouteB").text = transit_data["routes"][routeId]["route_long_name"]
+						infonode.get_node("HBoxContainer/Control2/label_RouteA").text = "Vehicle "+entity["id"]
+					#else:
+					#	print(routeId)
 
 func deg2tile(zoom=0.0, lon=0.0, lat=0.0):
 	return([floor(((lon + 180) / 360) * pow(2, zoom)), floor((1 - log(tan(deg_to_rad(lat)) + 1 / cos(deg_to_rad(lat))) / PI) /2 * pow(2, zoom))])
@@ -109,9 +113,11 @@ func set_location_output(content:String):
 	#location_data_output.text = content
 
 func hide_content():
+	$Control/panel_Top/label_Title.text = "OpenLynx"
 	$Control/panel_Center/content_Explore.visible = false
 	$Control/panel_Center/content_Routes.visible = false
 	$Control/panel_Center/content_Map.visible = false
+	$Control/panel_Center/content_Settings.visible = false
 
 func _on_btn_explore_pressed():
 	hide_content()
@@ -119,10 +125,13 @@ func _on_btn_explore_pressed():
 
 func _on_btn_routes_pressed():
 	hide_content()
+	$Control/panel_Top/label_Title.text = "Transit Routes"
 	$Control/panel_Center/content_Routes.visible = true
 
 func _on_btn_settings_pressed():
-	pass # Replace with function body.
+	hide_content()
+	$Control/panel_Top/label_Title.text = "App Settings"
+	$Control/panel_Center/content_Settings.visible = true
 
 func _on_btn_location_pressed():
 	## stop old watcher
@@ -165,14 +174,15 @@ func _on_btn_location_pressed():
 	# show location
 	#var tile = deg2tile(zoom, location["longitude"], location["latitude"])
 	lastKnownLocation = location
-	var map = $Control/panel_Center/content_Explore/mosaic/VBoxContainer/SubViewportContainer/SubViewport/Map
+	var map = $Control/panel_Center/content_Explore/Map/VBoxContainer/SubViewportContainer/SubViewport/Map
 	map.latitude = location["latitude"]
 	map.longitude = location["longitude"]
 	map.zoom = 20
+	$Control/panel_Center/content_Explore/MapNav/VBoxContainer/vs_Zoom.value = 20
 	$Control/panel_Center/content_Explore/Label.text = location._to_string()
 
 func _on_vs_zoom_value_changed(value):
-	var map = $Control/panel_Center/content_Explore/mosaic/VBoxContainer/SubViewportContainer/SubViewport/Map
+	var map = $Control/panel_Center/content_Explore/Map/VBoxContainer/SubViewportContainer/SubViewport/Map
 	map.zoom = value
 	if lastKnownLocation != null:
 		map.latitude = lastKnownLocation["latitude"]

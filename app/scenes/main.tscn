@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=3 uid="uid://d4ngqa3sdmho5"]
+[gd_scene load_steps=33 format=3 uid="uid://d4ngqa3sdmho5"]
 
 [ext_resource type="Script" path="res://scenes/main.gd" id="1_gku82"]
 [ext_resource type="Texture2D" uid="uid://nbahugvq5a1j" path="res://assets/icons/interface/settings.png" id="3_ujg57"]
@@ -69,6 +69,20 @@ corner_radius_bottom_right = 15
 corner_radius_bottom_left = 15
 expand_margin_left = 20.0
 expand_margin_right = 20.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ax50q"]
+bg_color = Color(0.140447, 0.140447, 0.140447, 0.956863)
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_em4ij"]
+bg_color = Color(0.250818, 0.250818, 0.250818, 0.956863)
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pvoe7"]
 bg_color = Color(0.129412, 0.129412, 0.129412, 1)
@@ -185,7 +199,7 @@ grow_vertical = 2
 texture = ExtResource("5_vsobr")
 stretch_mode = 1
 
-[node name="mosaic" type="Control" parent="Control/panel_Center/content_Explore"]
+[node name="Map" type="Control" parent="Control/panel_Center/content_Explore"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -194,11 +208,9 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 1
 script = ExtResource("5_br3jk")
-latitude = 28.548
-longitude = -81.38
 zoom = 19.0
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Control/panel_Center/content_Explore/mosaic"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/panel_Center/content_Explore/Map"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -206,35 +218,35 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="GridContainer" type="GridContainer" parent="Control/panel_Center/content_Explore/mosaic/VBoxContainer"]
+[node name="GridContainer" type="GridContainer" parent="Control/panel_Center/content_Explore/Map/VBoxContainer"]
 visible = false
 layout_mode = 2
 columns = 3
 
-[node name="Latitude" type="Label" parent="Control/panel_Center/content_Explore/mosaic/VBoxContainer/GridContainer"]
+[node name="Latitude" type="Label" parent="Control/panel_Center/content_Explore/Map/VBoxContainer/GridContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Latitude:"
 script = ExtResource("6_w0b0w")
 
-[node name="Longitude" type="Label" parent="Control/panel_Center/content_Explore/mosaic/VBoxContainer/GridContainer"]
+[node name="Longitude" type="Label" parent="Control/panel_Center/content_Explore/Map/VBoxContainer/GridContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Longitude:"
 script = ExtResource("7_oc5m0")
 
-[node name="Zoom" type="Label" parent="Control/panel_Center/content_Explore/mosaic/VBoxContainer/GridContainer"]
+[node name="Zoom" type="Label" parent="Control/panel_Center/content_Explore/Map/VBoxContainer/GridContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Zoom:"
 script = ExtResource("8_amh3p")
 
-[node name="SubViewportContainer" type="SubViewportContainer" parent="Control/panel_Center/content_Explore/mosaic/VBoxContainer"]
+[node name="SubViewportContainer" type="SubViewportContainer" parent="Control/panel_Center/content_Explore/Map/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 script = ExtResource("9_ql01p")
 
-[node name="SubViewport" type="SubViewport" parent="Control/panel_Center/content_Explore/mosaic/VBoxContainer/SubViewportContainer"]
+[node name="SubViewport" type="SubViewport" parent="Control/panel_Center/content_Explore/Map/VBoxContainer/SubViewportContainer"]
 transparent_bg = true
 handle_input_locally = false
 snap_2d_transforms_to_pixel = true
@@ -242,61 +254,61 @@ physics_object_picking = true
 render_target_update_mode = 4
 script = ExtResource("10_467ch")
 
-[node name="Map" type="Node2D" parent="Control/panel_Center/content_Explore/mosaic/VBoxContainer/SubViewportContainer/SubViewport"]
+[node name="Map" type="Node2D" parent="Control/panel_Center/content_Explore/Map/VBoxContainer/SubViewportContainer/SubViewport"]
 script = ExtResource("11_l021k")
 
-[node name="MapTileLoader" type="Node" parent="Control/panel_Center/content_Explore/mosaic/VBoxContainer/SubViewportContainer/SubViewport/Map"]
+[node name="MapTileLoader" type="Node" parent="Control/panel_Center/content_Explore/Map/VBoxContainer/SubViewportContainer/SubViewport/Map"]
 script = ExtResource("12_qge5c")
 cache_tiles = true
 tile_provider = 3
-concurrent_requests = 8
+concurrent_requests = 10
 
-[node name="Zoom1" type="Node2D" parent="Control/panel_Center/content_Explore/mosaic/VBoxContainer/SubViewportContainer/SubViewport/Map"]
+[node name="Zoom1" type="Node2D" parent="Control/panel_Center/content_Explore/Map/VBoxContainer/SubViewportContainer/SubViewport/Map"]
 
-[node name="Zoom2" type="Node2D" parent="Control/panel_Center/content_Explore/mosaic/VBoxContainer/SubViewportContainer/SubViewport/Map"]
+[node name="Zoom2" type="Node2D" parent="Control/panel_Center/content_Explore/Map/VBoxContainer/SubViewportContainer/SubViewport/Map"]
 
-[node name="Zoom3" type="Node2D" parent="Control/panel_Center/content_Explore/mosaic/VBoxContainer/SubViewportContainer/SubViewport/Map"]
+[node name="Zoom3" type="Node2D" parent="Control/panel_Center/content_Explore/Map/VBoxContainer/SubViewportContainer/SubViewport/Map"]
 
-[node name="Zoom4" type="Node2D" parent="Control/panel_Center/content_Explore/mosaic/VBoxContainer/SubViewportContainer/SubViewport/Map"]
+[node name="Zoom4" type="Node2D" parent="Control/panel_Center/content_Explore/Map/VBoxContainer/SubViewportContainer/SubViewport/Map"]
 
-[node name="Zoom5" type="Node2D" parent="Control/panel_Center/content_Explore/mosaic/VBoxContainer/SubViewportContainer/SubViewport/Map"]
+[node name="Zoom5" type="Node2D" parent="Control/panel_Center/content_Explore/Map/VBoxContainer/SubViewportContainer/SubViewport/Map"]
 
-[node name="Zoom6" type="Node2D" parent="Control/panel_Center/content_Explore/mosaic/VBoxContainer/SubViewportContainer/SubViewport/Map"]
+[node name="Zoom6" type="Node2D" parent="Control/panel_Center/content_Explore/Map/VBoxContainer/SubViewportContainer/SubViewport/Map"]
 
-[node name="Zoom7" type="Node2D" parent="Control/panel_Center/content_Explore/mosaic/VBoxContainer/SubViewportContainer/SubViewport/Map"]
+[node name="Zoom7" type="Node2D" parent="Control/panel_Center/content_Explore/Map/VBoxContainer/SubViewportContainer/SubViewport/Map"]
 
-[node name="Zoom8" type="Node2D" parent="Control/panel_Center/content_Explore/mosaic/VBoxContainer/SubViewportContainer/SubViewport/Map"]
+[node name="Zoom8" type="Node2D" parent="Control/panel_Center/content_Explore/Map/VBoxContainer/SubViewportContainer/SubViewport/Map"]
 
-[node name="Zoom9" type="Node2D" parent="Control/panel_Center/content_Explore/mosaic/VBoxContainer/SubViewportContainer/SubViewport/Map"]
+[node name="Zoom9" type="Node2D" parent="Control/panel_Center/content_Explore/Map/VBoxContainer/SubViewportContainer/SubViewport/Map"]
 
-[node name="Zoom10" type="Node2D" parent="Control/panel_Center/content_Explore/mosaic/VBoxContainer/SubViewportContainer/SubViewport/Map"]
+[node name="Zoom10" type="Node2D" parent="Control/panel_Center/content_Explore/Map/VBoxContainer/SubViewportContainer/SubViewport/Map"]
 
-[node name="Zoom11" type="Node2D" parent="Control/panel_Center/content_Explore/mosaic/VBoxContainer/SubViewportContainer/SubViewport/Map"]
+[node name="Zoom11" type="Node2D" parent="Control/panel_Center/content_Explore/Map/VBoxContainer/SubViewportContainer/SubViewport/Map"]
 
-[node name="Zoom12" type="Node2D" parent="Control/panel_Center/content_Explore/mosaic/VBoxContainer/SubViewportContainer/SubViewport/Map"]
+[node name="Zoom12" type="Node2D" parent="Control/panel_Center/content_Explore/Map/VBoxContainer/SubViewportContainer/SubViewport/Map"]
 
-[node name="Zoom13" type="Node2D" parent="Control/panel_Center/content_Explore/mosaic/VBoxContainer/SubViewportContainer/SubViewport/Map"]
+[node name="Zoom13" type="Node2D" parent="Control/panel_Center/content_Explore/Map/VBoxContainer/SubViewportContainer/SubViewport/Map"]
 
-[node name="Zoom14" type="Node2D" parent="Control/panel_Center/content_Explore/mosaic/VBoxContainer/SubViewportContainer/SubViewport/Map"]
+[node name="Zoom14" type="Node2D" parent="Control/panel_Center/content_Explore/Map/VBoxContainer/SubViewportContainer/SubViewport/Map"]
 
-[node name="Zoom15" type="Node2D" parent="Control/panel_Center/content_Explore/mosaic/VBoxContainer/SubViewportContainer/SubViewport/Map"]
+[node name="Zoom15" type="Node2D" parent="Control/panel_Center/content_Explore/Map/VBoxContainer/SubViewportContainer/SubViewport/Map"]
 
-[node name="Zoom16" type="Node2D" parent="Control/panel_Center/content_Explore/mosaic/VBoxContainer/SubViewportContainer/SubViewport/Map"]
+[node name="Zoom16" type="Node2D" parent="Control/panel_Center/content_Explore/Map/VBoxContainer/SubViewportContainer/SubViewport/Map"]
 
-[node name="Zoom17" type="Node2D" parent="Control/panel_Center/content_Explore/mosaic/VBoxContainer/SubViewportContainer/SubViewport/Map"]
+[node name="Zoom17" type="Node2D" parent="Control/panel_Center/content_Explore/Map/VBoxContainer/SubViewportContainer/SubViewport/Map"]
 
-[node name="Zoom18" type="Node2D" parent="Control/panel_Center/content_Explore/mosaic/VBoxContainer/SubViewportContainer/SubViewport/Map"]
+[node name="Zoom18" type="Node2D" parent="Control/panel_Center/content_Explore/Map/VBoxContainer/SubViewportContainer/SubViewport/Map"]
 
-[node name="Zoom19" type="Node2D" parent="Control/panel_Center/content_Explore/mosaic/VBoxContainer/SubViewportContainer/SubViewport/Map"]
+[node name="Zoom19" type="Node2D" parent="Control/panel_Center/content_Explore/Map/VBoxContainer/SubViewportContainer/SubViewport/Map"]
 
-[node name="Sprite2D" type="Sprite2D" parent="Control/panel_Center/content_Explore/mosaic/VBoxContainer/SubViewportContainer/SubViewport/Map/Zoom19"]
+[node name="Sprite2D" type="Sprite2D" parent="Control/panel_Center/content_Explore/Map/VBoxContainer/SubViewportContainer/SubViewport/Map/Zoom19"]
 visible = false
 z_index = 100
 texture = ExtResource("13_88b2i")
 
-[node name="Zoom20" type="Node2D" parent="Control/panel_Center/content_Explore/mosaic/VBoxContainer/SubViewportContainer/SubViewport/Map"]
+[node name="Zoom20" type="Node2D" parent="Control/panel_Center/content_Explore/Map/VBoxContainer/SubViewportContainer/SubViewport/Map"]
 
-[node name="Camera2D" type="Camera2D" parent="Control/panel_Center/content_Explore/mosaic/VBoxContainer/SubViewportContainer/SubViewport"]
+[node name="Camera2D" type="Camera2D" parent="Control/panel_Center/content_Explore/Map/VBoxContainer/SubViewportContainer/SubViewport"]
 
 [node name="Label" type="Label" parent="Control/panel_Center/content_Explore"]
 visible = false
@@ -365,7 +377,7 @@ size_flags_horizontal = 1
 size_flags_vertical = 3
 min_value = 1.0
 max_value = 20.0
-value = 20.0
+value = 19.0
 
 [node name="btn_Location3" type="Button" parent="Control/panel_Center/content_Explore/MapNav/VBoxContainer"]
 custom_minimum_size = Vector2(50, 50)
@@ -391,14 +403,21 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="le_Navigate" type="LineEdit" parent="Control/panel_Center/content_Routes"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/panel_Center/content_Routes"]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.0555556
 anchor_top = 0.0201005
-anchor_right = 0.944444
-anchor_bottom = 0.140704
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 10
+metadata/_edit_use_anchors_ = true
+
+[node name="le_Navigate" type="LineEdit" parent="Control/panel_Center/content_Routes/VBoxContainer"]
+custom_minimum_size = Vector2(640, 120)
+layout_mode = 2
+size_flags_horizontal = 4
 theme_override_font_sizes/font_size = 32
 theme_override_styles/normal = SubResource("StyleBoxFlat_w2v6s")
 theme_override_styles/focus = SubResource("StyleBoxFlat_1vlja")
@@ -406,18 +425,52 @@ placeholder_text = "Where to?"
 right_icon = ExtResource("5_qgg65")
 metadata/_edit_use_anchors_ = true
 
-[node name="ScrollContainer" type="ScrollContainer" parent="Control/panel_Center/content_Routes"]
-layout_mode = 1
-anchors_preset = -1
-anchor_top = 0.168844
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+[node name="HBoxContainer" type="HBoxContainer" parent="Control/panel_Center/content_Routes/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/separation = 20
+alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="btn_FavoriteRoutes" type="Button" parent="Control/panel_Center/content_Routes/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(300, 64)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+focus_mode = 0
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_ax50q")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_em4ij")
+toggle_mode = true
+text = "Favorite Routes"
+icon_alignment = 1
+expand_icon = true
+metadata/_edit_group_ = true
+metadata/_edit_use_anchors_ = true
+
+[node name="btn_SavedLocations" type="Button" parent="Control/panel_Center/content_Routes/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(300, 64)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+focus_mode = 0
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_ax50q")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_em4ij")
+toggle_mode = true
+text = "Saved Locations"
+icon_alignment = 1
+expand_icon = true
+metadata/_edit_group_ = true
+metadata/_edit_use_anchors_ = true
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Control/panel_Center/content_Routes/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
 theme = ExtResource("4_v2lg7")
 metadata/_edit_use_anchors_ = true
 
-[node name="GridContainer" type="GridContainer" parent="Control/panel_Center/content_Routes/ScrollContainer"]
+[node name="GridContainer" type="GridContainer" parent="Control/panel_Center/content_Routes/VBoxContainer/ScrollContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -431,6 +484,219 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="content_Settings" type="Control" parent="Control/panel_Center"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/panel_Center/content_Settings"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 40.0
+offset_top = 34.0
+offset_right = -40.0
+offset_bottom = -0.000244141
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 20
+
+[node name="label_MaxRequests" type="Label" parent="Control/panel_Center/content_Settings/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_font_sizes/font_size = 24
+text = "Maximum Requests per second"
+horizontal_alignment = 1
+
+[node name="hb_MaxRequests" type="HBoxContainer" parent="Control/panel_Center/content_Settings/VBoxContainer"]
+custom_minimum_size = Vector2(342, 30)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+focus_mode = 2
+mouse_filter = 0
+
+[node name="label_Min" type="Label" parent="Control/panel_Center/content_Settings/VBoxContainer/hb_MaxRequests"]
+layout_mode = 2
+text = "1"
+horizontal_alignment = 1
+
+[node name="HSlider" type="HSlider" parent="Control/panel_Center/content_Settings/VBoxContainer/hb_MaxRequests"]
+custom_minimum_size = Vector2(342, 30)
+layout_mode = 2
+size_flags_horizontal = 0
+min_value = 1.0
+max_value = 20.0
+value = 10.0
+tick_count = 4
+
+[node name="label_Max" type="Label" parent="Control/panel_Center/content_Settings/VBoxContainer/hb_MaxRequests"]
+layout_mode = 2
+text = "20"
+horizontal_alignment = 1
+
+[node name="label_DataInterval" type="Label" parent="Control/panel_Center/content_Settings/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_font_sizes/font_size = 24
+text = "Data Update Interval"
+horizontal_alignment = 1
+
+[node name="hb_DataInterval" type="HBoxContainer" parent="Control/panel_Center/content_Settings/VBoxContainer"]
+custom_minimum_size = Vector2(342, 30)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+focus_mode = 2
+mouse_filter = 0
+
+[node name="label_Min" type="Label" parent="Control/panel_Center/content_Settings/VBoxContainer/hb_DataInterval"]
+layout_mode = 2
+text = "1"
+horizontal_alignment = 1
+
+[node name="HSlider" type="HSlider" parent="Control/panel_Center/content_Settings/VBoxContainer/hb_DataInterval"]
+custom_minimum_size = Vector2(342, 30)
+layout_mode = 2
+size_flags_horizontal = 0
+min_value = 1.0
+max_value = 60.0
+value = 1.0
+tick_count = 6
+
+[node name="label_Max" type="Label" parent="Control/panel_Center/content_Settings/VBoxContainer/hb_DataInterval"]
+layout_mode = 2
+text = "60"
+horizontal_alignment = 1
+
+[node name="label_MapProvider" type="Label" parent="Control/panel_Center/content_Settings/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_font_sizes/font_size = 24
+text = "Map Provider"
+horizontal_alignment = 1
+
+[node name="ob_MapProvider" type="OptionButton" parent="Control/panel_Center/content_Settings/VBoxContainer"]
+custom_minimum_size = Vector2(250, 31)
+layout_mode = 2
+size_flags_horizontal = 0
+item_count = 6
+selected = 0
+popup/item_0/text = "Jawg"
+popup/item_0/id = 1
+popup/item_1/text = "Bing"
+popup/item_1/id = 2
+popup/item_1/disabled = true
+popup/item_2/text = "MapQuest"
+popup/item_2/id = 3
+popup/item_2/disabled = true
+popup/item_3/text = "MapBox"
+popup/item_3/id = 4
+popup/item_3/disabled = true
+popup/item_4/text = "OSM"
+popup/item_4/id = 5
+popup/item_4/disabled = true
+popup/item_5/text = "Custom"
+popup/item_5/id = 6
+popup/item_5/disabled = true
+
+[node name="label_MapTheme" type="Label" parent="Control/panel_Center/content_Settings/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_font_sizes/font_size = 24
+text = "Map Theme"
+horizontal_alignment = 1
+
+[node name="ob_MapTheme" type="OptionButton" parent="Control/panel_Center/content_Settings/VBoxContainer"]
+custom_minimum_size = Vector2(250, 31)
+layout_mode = 2
+size_flags_horizontal = 0
+item_count = 6
+selected = 0
+popup/item_0/text = "OpenLynx"
+popup/item_0/id = 1
+popup/item_1/text = "Satellite"
+popup/item_1/id = 0
+popup/item_1/disabled = true
+popup/item_2/text = "Street"
+popup/item_2/id = 4
+popup/item_2/disabled = true
+popup/item_3/text = "Light"
+popup/item_3/id = 2
+popup/item_3/disabled = true
+popup/item_4/text = "Dark"
+popup/item_4/id = 3
+popup/item_4/disabled = true
+popup/item_5/text = "Nature"
+popup/item_5/id = 5
+popup/item_5/disabled = true
+
+[node name="label_LocationProvider" type="Label" parent="Control/panel_Center/content_Settings/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_font_sizes/font_size = 24
+text = "Geolocation Provider"
+horizontal_alignment = 1
+
+[node name="ob_LocationProvider" type="OptionButton" parent="Control/panel_Center/content_Settings/VBoxContainer"]
+custom_minimum_size = Vector2(250, 31)
+layout_mode = 2
+size_flags_horizontal = 0
+item_count = 4
+selected = 0
+popup/item_0/text = "Fused"
+popup/item_0/id = 0
+popup/item_1/text = "GPS"
+popup/item_1/id = 1
+popup/item_2/text = "Network"
+popup/item_2/id = 2
+popup/item_3/text = "API"
+popup/item_3/id = 3
+popup/item_3/disabled = true
+
+[node name="label_ShowFavorites" type="Label" parent="Control/panel_Center/content_Settings/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_font_sizes/font_size = 24
+text = "Other Settings"
+horizontal_alignment = 1
+
+[node name="cb_ShowFavorites" type="CheckButton" parent="Control/panel_Center/content_Settings/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+disabled = true
+text = "Show Only Favorites"
+
+[node name="cb_DebugLog" type="CheckButton" parent="Control/panel_Center/content_Settings/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+disabled = true
+button_pressed = true
+text = "Enable Debug Log"
+
+[node name="cb_DebugLog2" type="CheckButton" parent="Control/panel_Center/content_Settings/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+disabled = true
+text = "Show Changelog"
+
+[node name="cb_CrashReports" type="CheckButton" parent="Control/panel_Center/content_Settings/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+disabled = true
+text = "Send Crash Reports"
+
+[node name="cb_Telemetry" type="CheckButton" parent="Control/panel_Center/content_Settings/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+disabled = true
+text = "Analytics and Telemetry"
 
 [node name="panel_Bottom" type="Panel" parent="Control"]
 layout_mode = 1
@@ -497,16 +763,16 @@ metadata/_edit_group_ = true
 metadata/_edit_use_anchors_ = true
 
 [connection signal="pressed" from="Control/panel_Top/btn_Settings" to="." method="_on_btn_settings_pressed"]
-[connection signal="latitude_changed" from="Control/panel_Center/content_Explore/mosaic" to="Control/panel_Center/content_Explore/mosaic/VBoxContainer/GridContainer/Latitude" method="_on_mosaic_latitude_changed"]
-[connection signal="longitude_changed" from="Control/panel_Center/content_Explore/mosaic" to="Control/panel_Center/content_Explore/mosaic/VBoxContainer/GridContainer/Longitude" method="_on_mosaic_longitude_changed"]
-[connection signal="zoom_changed" from="Control/panel_Center/content_Explore/mosaic" to="Control/panel_Center/content_Explore/mosaic/VBoxContainer/GridContainer/Zoom" method="_on_mosaic_zoom_changed"]
-[connection signal="zoom_changed" from="Control/panel_Center/content_Explore/mosaic" to="Control/panel_Center/content_Explore/mosaic/VBoxContainer/SubViewportContainer/SubViewport/Map" method="_on_mosaic_zoom_changed"]
-[connection signal="resized" from="Control/panel_Center/content_Explore/mosaic/VBoxContainer/SubViewportContainer" to="Control/panel_Center/content_Explore/mosaic/VBoxContainer/SubViewportContainer" method="_on_resized"]
-[connection signal="size_changed" from="Control/panel_Center/content_Explore/mosaic/VBoxContainer/SubViewportContainer/SubViewport" to="Control/panel_Center/content_Explore/mosaic/VBoxContainer/SubViewportContainer/SubViewport/Map" method="_on_sub_viewport_size_changed"]
-[connection signal="latitude_changed" from="Control/panel_Center/content_Explore/mosaic/VBoxContainer/SubViewportContainer/SubViewport/Map" to="Control/panel_Center/content_Explore/mosaic" method="_on_map_latitude_changed"]
-[connection signal="longitude_changed" from="Control/panel_Center/content_Explore/mosaic/VBoxContainer/SubViewportContainer/SubViewport/Map" to="Control/panel_Center/content_Explore/mosaic" method="_on_map_longitude_changed"]
-[connection signal="zoom_changed" from="Control/panel_Center/content_Explore/mosaic/VBoxContainer/SubViewportContainer/SubViewport/Map" to="Control/panel_Center/content_Explore/mosaic" method="_on_map_zoom_changed"]
-[connection signal="tile_loaded" from="Control/panel_Center/content_Explore/mosaic/VBoxContainer/SubViewportContainer/SubViewport/Map/MapTileLoader" to="Control/panel_Center/content_Explore/mosaic/VBoxContainer/SubViewportContainer/SubViewport/Map" method="_on_tile_loaded"]
+[connection signal="latitude_changed" from="Control/panel_Center/content_Explore/Map" to="Control/panel_Center/content_Explore/Map/VBoxContainer/GridContainer/Latitude" method="_on_mosaic_latitude_changed"]
+[connection signal="longitude_changed" from="Control/panel_Center/content_Explore/Map" to="Control/panel_Center/content_Explore/Map/VBoxContainer/GridContainer/Longitude" method="_on_mosaic_longitude_changed"]
+[connection signal="zoom_changed" from="Control/panel_Center/content_Explore/Map" to="Control/panel_Center/content_Explore/Map/VBoxContainer/GridContainer/Zoom" method="_on_mosaic_zoom_changed"]
+[connection signal="zoom_changed" from="Control/panel_Center/content_Explore/Map" to="Control/panel_Center/content_Explore/Map/VBoxContainer/SubViewportContainer/SubViewport/Map" method="_on_mosaic_zoom_changed"]
+[connection signal="resized" from="Control/panel_Center/content_Explore/Map/VBoxContainer/SubViewportContainer" to="Control/panel_Center/content_Explore/Map/VBoxContainer/SubViewportContainer" method="_on_resized"]
+[connection signal="size_changed" from="Control/panel_Center/content_Explore/Map/VBoxContainer/SubViewportContainer/SubViewport" to="Control/panel_Center/content_Explore/Map/VBoxContainer/SubViewportContainer/SubViewport/Map" method="_on_sub_viewport_size_changed"]
+[connection signal="latitude_changed" from="Control/panel_Center/content_Explore/Map/VBoxContainer/SubViewportContainer/SubViewport/Map" to="Control/panel_Center/content_Explore/Map" method="_on_map_latitude_changed"]
+[connection signal="longitude_changed" from="Control/panel_Center/content_Explore/Map/VBoxContainer/SubViewportContainer/SubViewport/Map" to="Control/panel_Center/content_Explore/Map" method="_on_map_longitude_changed"]
+[connection signal="zoom_changed" from="Control/panel_Center/content_Explore/Map/VBoxContainer/SubViewportContainer/SubViewport/Map" to="Control/panel_Center/content_Explore/Map" method="_on_map_zoom_changed"]
+[connection signal="tile_loaded" from="Control/panel_Center/content_Explore/Map/VBoxContainer/SubViewportContainer/SubViewport/Map/MapTileLoader" to="Control/panel_Center/content_Explore/Map/VBoxContainer/SubViewportContainer/SubViewport/Map" method="_on_tile_loaded"]
 [connection signal="value_changed" from="Control/panel_Center/content_Explore/MapNav/VBoxContainer/vs_Zoom" to="." method="_on_vs_zoom_value_changed"]
 [connection signal="pressed" from="Control/panel_Center/content_Explore/MapNav/VBoxContainer/btn_Location3" to="." method="_on_btn_location_pressed"]
 [connection signal="pressed" from="Control/panel_Bottom/btn_Explore" to="." method="_on_btn_explore_pressed"]

@@ -5,7 +5,7 @@ signal zoom_changed(float)
 signal latitude_changed(float)
 signal longitude_changed(float)
 
-@export var points: Dictionary = {"19": [{"coords": Vector2(36768256, 55996160), "sprite": "bus", "color": Color.DARK_BLUE}]}
+@export var points: Dictionary = {"19": [{"coords": Vector2(36767488, 55995136), "sprite": "bus", "color": Color.DARK_BLUE}]}
 
 var PointIcons = {
 	"home_pin": preload("res://assets/icons/interface/home_pin.png"),
@@ -44,7 +44,7 @@ var PointIcons = {
 
 			zoom = val
 			zoom_changed.emit(val)
-			print(val)
+			print(val) # zoom active while in other content, not to worry mobile uses slider
 			refresh_points()
 
 # canvas size

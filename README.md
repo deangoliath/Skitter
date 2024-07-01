@@ -17,4 +17,4 @@ Reach out via EMAIL or XMPP!
 
 [![EMAIL Badge](https://img.shields.io/badge/wyatt.agathe@mailfence.com-005FF9?logo=minutemailer&logoColor=fff&style=flat)](mailto:wyatt.agathe@mailfence.com)
 
-[![XMPP Badge](https://img.shields.io/badge/wa_services@chatterboxtown.us-6A5FBB?logo=jabber&logoColor=fff&style=flat)](mailto:wyatt.agathe@mailfence.com)
+[![XMPP Badge](https://img.shields.io/badge/wa_services@chatterboxtown.us-6A5FBB?logo=jabber&logoColor=fff&style=flat)](xmpp:wa_services@chatterboxtown.us)
