@@ -26,18 +26,18 @@ func _init(location_data:Dictionary):
 	
 	accuracy = location_data["accuracy"]
 	altitude = location_data["altitude"]
-	altitude_accuracy = location_data["altitude_accuracy"]
+	#altitude_accuracy = location_data["altitude_accuracy"]
 	
-	course = location_data["course"]
-	course_accuracy = location_data["course_accuracy"]
+	#course = location_data["course"]
+	#course_accuracy = location_data["course_accuracy"]
 	
 	speed = location_data["speed"]
-	speed_accuracy = location_data["speed_accuracy"]
+	#speed_accuracy = location_data["speed_accuracy"]
 	
 	timestamp = location_data["timestamp"]
 	
-	lat_string = location_data["latitude_string"] 
-	lon_string = location_data["longitude_string"]
+	#lat_string = location_data["latitude_string"] 
+	#lon_string = location_data["longitude_string"]
 
 func get_speed_kph()->float:
 	return speed *3.6

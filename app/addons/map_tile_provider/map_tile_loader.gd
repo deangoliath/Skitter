@@ -27,7 +27,7 @@ static var FORMATS := [
 
 
 @export var custom_fields := {}
-@export var user_agent := "Mozilla/5.0 Gecko/20100101 Firefox/118.0"
+@export var user_agent := "OpenLynx "+str(ProjectSettings.get_setting("version"))
 @export var allow_network := true
 @export var cache_tiles := false
 @export var tile_provider: Provider:

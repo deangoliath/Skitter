@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=3 uid="uid://d4ngqa3sdmho5"]
+[gd_scene load_steps=34 format=3 uid="uid://d4ngqa3sdmho5"]
 
 [ext_resource type="Script" path="res://scenes/main.gd" id="1_gku82"]
 [ext_resource type="Texture2D" uid="uid://nbahugvq5a1j" path="res://assets/icons/interface/settings.png" id="3_ujg57"]
@@ -12,13 +12,13 @@
 [ext_resource type="Script" path="res://addons/map_tile_provider/examples/Longitude.gd" id="7_oc5m0"]
 [ext_resource type="Script" path="res://addons/map_tile_provider/examples/Zoom.gd" id="8_amh3p"]
 [ext_resource type="Texture2D" uid="uid://b3xyluqkn8wc0" path="res://assets/icons/interface/explore.png" id="8_b6y1o"]
-[ext_resource type="Texture2D" uid="uid://4ycx30tpo67i" path="res://assets/icons/interface/map.png" id="9_40877"]
 [ext_resource type="Script" path="res://addons/map_tile_provider/examples/SubViewportContainer.gd" id="9_ql01p"]
 [ext_resource type="Script" path="res://addons/map_tile_provider/map_provider.gd" id="10_467ch"]
 [ext_resource type="Texture2D" uid="uid://bn7vwmw0wefac" path="res://assets/icons/interface/bus.png" id="10_h2x38"]
 [ext_resource type="Script" path="res://addons/map_tile_provider/examples/map.gd" id="11_l021k"]
 [ext_resource type="Script" path="res://addons/map_tile_provider/map_tile_loader.gd" id="12_qge5c"]
 [ext_resource type="Texture2D" uid="uid://fd46cemim7db" path="res://assets/icons/android/masked/icon.png" id="13_88b2i"]
+[ext_resource type="Texture2D" uid="uid://c31cin7ralivo" path="res://assets/icons/interface/payments.png" id="18_rmuvm"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_conly"]
 bg_color = Color(1, 1, 1, 1)
@@ -94,11 +94,21 @@ corner_radius_top_right = 15
 corner_radius_bottom_right = 15
 corner_radius_bottom_left = 15
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_h4r12"]
+bg_color = Color(0.188371, 0.188371, 0.188371, 1)
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+
 [node name="Main" type="Node"]
 script = ExtResource("1_gku82")
 
 [node name="HTTPManager" type="Node" parent="."]
 script = ExtResource("3_vdrhb")
+accept_cookies = true
+
+[node name="HTTPRequest" type="HTTPRequest" parent="."]
 
 [node name="Control" type="Control" parent="."]
 layout_mode = 3
@@ -259,6 +269,7 @@ script = ExtResource("11_l021k")
 
 [node name="MapTileLoader" type="Node" parent="Control/panel_Center/content_Explore/Map/VBoxContainer/SubViewportContainer/SubViewport/Map"]
 script = ExtResource("12_qge5c")
+user_agent = "Mozilla/5.0 Gecko/20100101 Firefox/118.0"
 cache_tiles = true
 tile_provider = 3
 concurrent_requests = 10
@@ -493,7 +504,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/v_separation = 3
 
-[node name="content_Map" type="Control" parent="Control/panel_Center"]
+[node name="content_Wallet" type="Control" parent="Control/panel_Center"]
 visible = false
 layout_mode = 1
 anchors_preset = 15
@@ -501,6 +512,66 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="label_Info" type="Label" parent="Control/panel_Center/content_Wallet"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 0.0914573
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 30
+text = "Find your passes and fares here"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="btn_Login" type="Button" parent="Control/panel_Center/content_Wallet"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.4
+anchor_top = 0.348744
+anchor_right = 0.601389
+anchor_bottom = 0.379899
+grow_horizontal = 2
+grow_vertical = 2
+text = "Login"
+metadata/_edit_use_anchors_ = true
+
+[node name="le_Email" type="LineEdit" parent="Control/panel_Center/content_Wallet"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.338194
+anchor_top = 0.243216
+anchor_right = 0.661806
+anchor_bottom = 0.274372
+offset_left = 1.52588e-05
+grow_horizontal = 2
+grow_vertical = 2
+placeholder_text = "Email"
+metadata/_edit_use_anchors_ = true
+
+[node name="le_Password" type="LineEdit" parent="Control/panel_Center/content_Wallet"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.338194
+anchor_top = 0.291457
+anchor_right = 0.661806
+anchor_bottom = 0.322613
+offset_left = 1.52588e-05
+grow_horizontal = 2
+grow_vertical = 2
+placeholder_text = "Password"
+metadata/_edit_use_anchors_ = true
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Control/panel_Center/content_Wallet"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.451256
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
 
 [node name="content_Settings" type="Control" parent="Control/panel_Center"]
 visible = false
@@ -609,7 +680,6 @@ popup/item_0/text = "Jawg"
 popup/item_0/id = 1
 popup/item_1/text = "Bing"
 popup/item_1/id = 2
-popup/item_1/disabled = true
 popup/item_2/text = "MapQuest"
 popup/item_2/id = 3
 popup/item_2/disabled = true
@@ -637,9 +707,9 @@ size_flags_horizontal = 0
 item_count = 6
 selected = 0
 popup/item_0/text = "OpenLynx"
-popup/item_0/id = 1
+popup/item_0/id = 0
 popup/item_1/text = "Satellite"
-popup/item_1/id = 0
+popup/item_1/id = 1
 popup/item_1/disabled = true
 popup/item_2/text = "Street"
 popup/item_2/id = 4
@@ -752,13 +822,14 @@ size_flags_horizontal = 4
 size_flags_vertical = 4
 focus_mode = 0
 theme_override_styles/normal = SubResource("StyleBoxFlat_ajb57")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_h4r12")
 icon = ExtResource("8_b6y1o")
 icon_alignment = 1
 expand_icon = true
 metadata/_edit_group_ = true
 metadata/_edit_use_anchors_ = true
 
-[node name="btn_Map" type="Button" parent="Control/panel_Bottom"]
+[node name="btn_Wallet" type="Button" parent="Control/panel_Bottom"]
 custom_minimum_size = Vector2(120, 120)
 layout_mode = 2
 anchor_left = 0.694444
@@ -770,9 +841,9 @@ size_flags_horizontal = 4
 size_flags_vertical = 4
 focus_mode = 0
 theme_override_styles/normal = SubResource("StyleBoxFlat_ajb57")
-icon = ExtResource("9_40877")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_h4r12")
+icon = ExtResource("18_rmuvm")
 icon_alignment = 1
-expand_icon = true
 metadata/_edit_group_ = true
 metadata/_edit_use_anchors_ = true
 
@@ -787,12 +858,14 @@ size_flags_horizontal = 4
 size_flags_vertical = 4
 focus_mode = 0
 theme_override_styles/normal = SubResource("StyleBoxFlat_ajb57")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_h4r12")
 icon = ExtResource("10_h2x38")
 icon_alignment = 1
 expand_icon = true
 metadata/_edit_group_ = true
 metadata/_edit_use_anchors_ = true
 
+[connection signal="request_completed" from="HTTPRequest" to="." method="_on_http_request_request_completed"]
 [connection signal="pressed" from="Control/panel_Top/btn_Settings" to="." method="_on_btn_settings_pressed"]
 [connection signal="latitude_changed" from="Control/panel_Center/content_Explore/Map" to="Control/panel_Center/content_Explore/Map/VBoxContainer/GridContainer/Latitude" method="_on_mosaic_latitude_changed"]
 [connection signal="longitude_changed" from="Control/panel_Center/content_Explore/Map" to="Control/panel_Center/content_Explore/Map/VBoxContainer/GridContainer/Longitude" method="_on_mosaic_longitude_changed"]
@@ -806,5 +879,8 @@ metadata/_edit_use_anchors_ = true
 [connection signal="tile_loaded" from="Control/panel_Center/content_Explore/Map/VBoxContainer/SubViewportContainer/SubViewport/Map/MapTileLoader" to="Control/panel_Center/content_Explore/Map/VBoxContainer/SubViewportContainer/SubViewport/Map" method="_on_tile_loaded"]
 [connection signal="value_changed" from="Control/panel_Center/content_Explore/MapNav/VBoxContainer/vs_Zoom" to="." method="_on_vs_zoom_value_changed"]
 [connection signal="pressed" from="Control/panel_Center/content_Explore/MapNav/VBoxContainer/btn_Location3" to="." method="_on_btn_location_pressed"]
+[connection signal="pressed" from="Control/panel_Center/content_Wallet/btn_Login" to="." method="_on_btn_login_pressed"]
+[connection signal="item_selected" from="Control/panel_Center/content_Settings/VBoxContainer/ob_MapProvider" to="." method="_on_ob_map_provider_item_selected"]
 [connection signal="pressed" from="Control/panel_Bottom/btn_Explore" to="." method="_on_btn_explore_pressed"]
+[connection signal="pressed" from="Control/panel_Bottom/btn_Wallet" to="." method="_on_btn_wallet_pressed"]
 [connection signal="pressed" from="Control/panel_Bottom/btn_Routes" to="." method="_on_btn_routes_pressed"]

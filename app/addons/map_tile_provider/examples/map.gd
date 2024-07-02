@@ -5,7 +5,14 @@ signal zoom_changed(float)
 signal latitude_changed(float)
 signal longitude_changed(float)
 
-@export var points: Dictionary = {"19": [{"coords": Vector2(36767488, 55995136), "sprite": "bus", "color": Color.DARK_BLUE}]}
+#@export var points: Dictionary = {
+	#"20": {},
+	#"19": {"Lynx Central Station": {"coords": Vector2(36767488, 55995136), "sprite": "bus", "color": Color.DARK_BLUE}},
+	#"18": {},"17": {},"16": {},"15": {},"14": {},"13": {},"12": {},"11": {},"10": {},"9": {},"8": {},"7": {},"6": {},"5": {},"4": {},"3": {},"2": {},"1": {}}
+
+@export var points: Dictionary = {
+	"Lynx Central Station": {"coords": Vector2(36767488, 55995136), "sprite": "bus", "color": Color.DARK_BLUE, "label": "Lynx Central Station"}
+}
 
 var PointIcons = {
 	"home_pin": preload("res://assets/icons/interface/home_pin.png"),
@@ -126,30 +133,40 @@ func _place_sprite(level: Dictionary, tile: Dictionary):
 func click_area(viewport, event, shape_idx, area): # need to somehow place on area2d.position +/- relative event.position
 	if event is InputEventMouseButton:
 		if event.double_click:
-			var loader = $MapTileLoader
-			var sprite = Sprite2D.new()
-			sprite.texture = PointIcons["pin"]
+			var random_name = $"../../../../../../../..".generate_string(10)
 			var coords = Vector2(area.get_parent().position.x, area.get_parent().position.y)
-			#var step = Vector2(256, 256)
-			#sprite.position = Vector2(step.x * coords.x, step.y * coords.y)
-			coords = Vector2(coords.x, coords.y)
-			sprite.position = coords
-			sprite.z_index = 1
-			get_node("Zoom"+str(zoom)).add_child(sprite)
-			#points.append({"coords": Vector3i(, 437668, 20), "sprite": "home_pin"})
+			points[str(zoom)][random_name] = {"coords": coords, "sprite": "pin", "color": Color.WHITE}
 			refresh_points()
 
-func refresh_points(): # does not remove previous points yet
+var spawned_points = []
+
+func refresh_points():
+	for point in spawned_points:
+		point.queue_free()
+	spawned_points.clear()
 	for layer in points:
-		for point in points[layer]:
-			var loader = $MapTileLoader
-			var sprite = Sprite2D.new()
-			sprite.texture = PointIcons[point["sprite"]]
-			var coords = point["coords"]
-			var step = Vector2(256, 256)
-			sprite.position = coords
-			sprite.z_index = 1
-			get_node("Zoom"+layer).add_child(sprite)
+		for point in points:
+			spawn_point(points[point])
+
+func spawn_point(point):
+	#for zoom in range(1, _zooms.size()):
+	var loader = $MapTileLoader
+	var sprite = Sprite2D.new()
+	spawned_points.append(sprite)
+	sprite.texture = PointIcons[point["sprite"]]
+	sprite.self_modulate = point["color"]
+	var coords = point["coords"]
+	var step = Vector2(256, 256)
+	sprite.position = coords
+	sprite.z_index = 1
+	var label = Label.new()
+	label.text = point["label"]
+	label.add_theme_color_override("font_outline_color", Color.BLACK)
+	label.add_theme_constant_override("outline_size", 10)
+	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	label.position = Vector2(-25, 35)
+	sprite.add_child(label)
+	get_node("Zoom"+str(zoom)).add_child(sprite)
 
 func _update_visible_rect() -> void:
 	if not is_node_ready():
