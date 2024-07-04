@@ -175,8 +175,11 @@ func set_failure_timeout(seconds:int):
 
 func set_debug_log_signal(send:bool):
 	_geolocation_plugin.set_debug_log_signal(send)
-	
-func set_auto_check_location_capability(auto:bool):
+
+func set_location_provider(send:String):
+	_geolocation_plugin.set_location_provider(send)
+
+func set_auto_check_location_capability(auto:bool): # maybe this could cause crash as well
 	_geolocation_plugin.set_auto_check_location_capability(auto)
 
 # plugin signals

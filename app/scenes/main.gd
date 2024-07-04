@@ -19,10 +19,11 @@ var http_requests = {
 }
 var http_occupied = false
 
-@onready var user_data = {"update_vehicle_positions": true, "lastKnownLocation": null, "map_provider": [0, MAP_LOADER.Provider.JAWG]}
+@onready var user_data = {"update_vehicle_positions": true, "lastKnownLocation": null, "map_provider": [0, MAP_LOADER.Provider.JAWG], "location_provider": [0, "FUSED"]}
 
 func _ready():
 	load_data()
+	# check if internet connectivity here before issuing http requests
 	$HTTPManager.job(
 		host+"/get_feed/"
 		).on_success(
@@ -121,6 +122,9 @@ func load_data():
 		save_data()
 	$Control/panel_Center/content_Settings/VBoxContainer/ob_MapProvider.select(user_data["map_provider"][0])
 	MAP_LOADER.tile_provider = user_data["map_provider"][1]
+	$Control/panel_Center/content_Settings/VBoxContainer/ob_LocationProvider.select(user_data["location_provider"][0])
+	if Engine.has_singleton("Geolocation"):
+		geolocation_api.set_location_provider(user_data["location_provider"][1])
 
 func save_data():
 	var file = FileAccess.open("user://user_data.json", FileAccess.WRITE)
@@ -202,27 +206,28 @@ func _on_btn_location_pressed():
 		#
 	#glog("after watching while loop. should be end here after stop or error")
 	
-	var request = geolocation_api.request_location_autopermission()
-	var location:Location = await request.location_update
-	glog("after yield")
-	# location is null when no location could be found (no permission, no connection, no capabilty)
-	if location == null:
-		glog("location was null")
-		# log error if an error was reported
-		if request.error > 0:
-			set_location_output("Error: " + str(request.error))
-		else:
-			set_location_output("Error: " + geolocation_api.geolocation_error_codes.keys()[request.error-1])
-		return
-	# show location
-	#var tile = deg2tile(zoom, location["longitude"], location["latitude"])
-	user_data["lastKnownLocation"] = location
-	save_data()
-	MAP.latitude = location["latitude"]
-	MAP.longitude = location["longitude"]
-	MAP.zoom = 20
-	$Control/panel_Center/content_Explore/MapNav/VBoxContainer/vs_Zoom.value = 20
-	$Control/panel_Center/content_Explore/Label.text = location._to_string()
+	if Engine.has_singleton("Geolocation"):
+		var request = geolocation_api.request_location_autopermission()
+		var location:Location = await request.location_update
+		glog("after yield")
+		# location is null when no location could be found (no permission, no connection, no capabilty)
+		if location == null:
+			glog("location was null")
+			# log error if an error was reported
+			if request.error > 0:
+				set_location_output("Error: " + str(request.error))
+			else:
+				set_location_output("Error: " + geolocation_api.geolocation_error_codes.keys()[request.error-1])
+			return
+		# show location
+		#var tile = deg2tile(zoom, location["longitude"], location["latitude"])
+		user_data["lastKnownLocation"] = location
+		save_data()
+		MAP.latitude = location["latitude"]
+		MAP.longitude = location["longitude"]
+		#MAP.zoom = 20
+		#$Control/panel_Center/content_Explore/MapNav/VBoxContainer/vs_Zoom.value = 20
+		$Control/panel_Center/content_Explore/Label.text = location._to_string()
 
 func _on_vs_zoom_value_changed(value):
 	MAP.zoom = value
@@ -246,7 +251,7 @@ func _on_btn_login_pressed():
 		print('http failed')
 		return # show that login failed
 	if rdata != null:
-		$HTTPRequest.set_http_proxy("127.0.0.1", 8080)
+		#$HTTPRequest.set_http_proxy("127.0.0.1", 8080)
 		var headers = rdata[1]
 		var headers_data = {}
 		#print(headers[4].split("; ")[0].split("Set-Cookie: ASP.NET_SessionId="))
@@ -289,6 +294,7 @@ func _on_btn_login_pressed():
 		#custom_headers = ["Cookie: "+"ASP.NET_SessionId="+headers_data["ASP.NET_SessionId"]+";"+"__RequestVerificationToken="+headers_data["__RequestVerificationToken"]]
 		request_type = HTTPClient.METHOD_POST
 		retrieve_token = generate_string(100)
+		# this may be the issue, does http request create new session? should not?
 		make_http_request("http://www.lynxpawpass.com/members/login/", data, true, retrieve_token, custom_headers, request_type, true)
 		while http_requests.has(retrieve_token) == false:
 			await get_tree().create_timer(0.01).timeout
@@ -362,10 +368,38 @@ func _on_http_request_request_completed(result, response_code, headers, body):
 
 func _on_ob_map_provider_item_selected(index):
 	if index == 0:
-		user_data["map_provider"][0] = 0
 		user_data["map_provider"][1] = MAP_LOADER.Provider.JAWG
 	elif index == 1:
-		user_data["map_provider"][0] = 1
 		user_data["map_provider"][1] = MAP_LOADER.Provider.BING
+	user_data["map_provider"][0] = index
 	save_data()
 	MAP_LOADER.tile_provider = user_data["map_provider"][1]
+
+func _on_ob_location_provider_item_selected(index):
+	if index == 0:
+		user_data["location_provider"][1] = "FUSED"
+	elif index == 1:
+		user_data["location_provider"][1] = "GPS"
+	elif index == 2:
+		user_data["location_provider"][1] = "NETWORK"
+	elif index == 3:
+		user_data["location_provider"][1] = "API"
+	user_data["location_provider"][0] = index
+	save_data()
+	geolocation_api.set_location_provider(user_data["location_provider"][1])
+
+func _on_btn_other_settings_next_pressed():
+	var tabs = $Control/panel_Center/content_Settings/VBoxContainer/TabContainer
+	tabs.current_tab += 1
+	if tabs.current_tab+1 >= tabs.get_tab_count():
+		$Control/panel_Center/content_Settings/VBoxContainer/hb_OtherSettingsNav/btn_OtherSettingsNext.disabled = true
+	if tabs.current_tab > 0:
+		$Control/panel_Center/content_Settings/VBoxContainer/hb_OtherSettingsNav/btn_OtherSettingsBack.disabled = false
+
+func _on_btn_other_settings_back_pressed():
+	var tabs = $Control/panel_Center/content_Settings/VBoxContainer/TabContainer
+	tabs.current_tab -= 1
+	if tabs.current_tab <= 0:
+		$Control/panel_Center/content_Settings/VBoxContainer/hb_OtherSettingsNav/btn_OtherSettingsBack.disabled = true
+	if tabs.current_tab+1 <= tabs.get_tab_count():
+		$Control/panel_Center/content_Settings/VBoxContainer/hb_OtherSettingsNav/btn_OtherSettingsNext.disabled = false
