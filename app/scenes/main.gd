@@ -298,6 +298,9 @@ func _on_btn_login_pressed():
 				func( _response ):
 					print("this one means failure")
 					#print("this should not happen, should return 500 internal.. if you read this PLEASE open an issue for investigation!!!!")
+					$Control/panel_Center/content_Wallet/content_Login/VBoxContainer/le_Email.editable = true
+					$Control/panel_Center/content_Wallet/content_Login/VBoxContainer/le_Password.editable = true
+					$Control/panel_Center/content_Wallet/content_Login/VBoxContainer/btn_Login.disabled = false
 			).on_failure(
 				func( _response ):
 					data.erase("CT_Main_0$txtUsername")

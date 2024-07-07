@@ -1,4 +1,4 @@
-[gd_scene load_steps=40 format=3 uid="uid://d4ngqa3sdmho5"]
+[gd_scene load_steps=43 format=3 uid="uid://d4ngqa3sdmho5"]
 
 [ext_resource type="Script" path="res://scenes/main.gd" id="1_gku82"]
 [ext_resource type="Texture2D" uid="uid://nbahugvq5a1j" path="res://assets/icons/interface/settings.png" id="3_ujg57"]
@@ -90,6 +90,33 @@ border_width_bottom = 4
 border_color = Color(0.217101, 0.217101, 0.217101, 1)
 corner_radius_bottom_right = 50
 corner_radius_bottom_left = 50
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rhhxa"]
+bg_color = Color(0.129412, 0.129412, 0.129412, 1)
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+expand_margin_left = 10.0
+expand_margin_right = 10.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1tq1s"]
+bg_color = Color(0.129412, 0.129412, 0.129412, 1)
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+expand_margin_left = 10.0
+expand_margin_right = 10.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bmtbj"]
+bg_color = Color(0.129412, 0.129412, 0.129412, 1)
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+expand_margin_left = 10.0
+expand_margin_right = 10.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jg3dy"]
 bg_color = Color(0.140447, 0.140447, 0.140447, 1)
@@ -601,6 +628,7 @@ vertical_alignment = 1
 metadata/_edit_use_anchors_ = true
 
 [node name="ob_TransitService" type="OptionButton" parent="Control/panel_Center/content_Wallet/content_Login/VBoxContainer"]
+custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 focus_mode = 0
 disabled = true
@@ -610,18 +638,24 @@ popup/item_0/text = "Lynx PawPass"
 popup/item_0/id = 0
 
 [node name="le_Email" type="LineEdit" parent="Control/panel_Center/content_Wallet/content_Login/VBoxContainer"]
-custom_minimum_size = Vector2(0, 50)
+custom_minimum_size = Vector2(0, 75)
 layout_mode = 2
+theme_override_font_sizes/font_size = 25
+theme_override_styles/normal = SubResource("StyleBoxFlat_rhhxa")
 placeholder_text = "Email"
 
 [node name="le_Password" type="LineEdit" parent="Control/panel_Center/content_Wallet/content_Login/VBoxContainer"]
-custom_minimum_size = Vector2(0, 50)
+custom_minimum_size = Vector2(0, 75)
 layout_mode = 2
+theme_override_font_sizes/font_size = 25
+theme_override_styles/normal = SubResource("StyleBoxFlat_1tq1s")
 placeholder_text = "Password"
 
 [node name="btn_Login" type="Button" parent="Control/panel_Center/content_Wallet/content_Login/VBoxContainer"]
-custom_minimum_size = Vector2(0, 50)
+custom_minimum_size = Vector2(0, 75)
 layout_mode = 2
+theme_override_font_sizes/font_size = 25
+theme_override_styles/normal = SubResource("StyleBoxFlat_bmtbj")
 text = "Login"
 metadata/_edit_use_anchors_ = true
 
