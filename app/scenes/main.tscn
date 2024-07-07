@@ -109,7 +109,6 @@ script = ExtResource("1_gku82")
 [node name="HTTPManager" type="Node" parent="."]
 script = ExtResource("3_vdrhb")
 accept_cookies = true
-print_debug = true
 
 [node name="HTTPRequest" type="HTTPRequest" parent="."]
 
@@ -528,52 +527,159 @@ horizontal_alignment = 1
 vertical_alignment = 1
 metadata/_edit_use_anchors_ = true
 
-[node name="btn_Login" type="Button" parent="Control/panel_Center/content_Wallet"]
+[node name="content_Login" type="Control" parent="Control/panel_Center/content_Wallet"]
 layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.4
-anchor_top = 0.348744
-anchor_right = 0.601389
-anchor_bottom = 0.379899
-grow_horizontal = 2
-grow_vertical = 2
-text = "Login"
-metadata/_edit_use_anchors_ = true
-
-[node name="le_Email" type="LineEdit" parent="Control/panel_Center/content_Wallet"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.338194
-anchor_top = 0.243216
-anchor_right = 0.661806
-anchor_bottom = 0.274372
-offset_left = 1.52588e-05
-grow_horizontal = 2
-grow_vertical = 2
-placeholder_text = "Email"
-metadata/_edit_use_anchors_ = true
-
-[node name="le_Password" type="LineEdit" parent="Control/panel_Center/content_Wallet"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.338194
-anchor_top = 0.291457
-anchor_right = 0.661806
-anchor_bottom = 0.322613
-offset_left = 1.52588e-05
-grow_horizontal = 2
-grow_vertical = 2
-placeholder_text = "Password"
-metadata/_edit_use_anchors_ = true
-
-[node name="RichTextLabel" type="RichTextLabel" parent="Control/panel_Center/content_Wallet"]
-layout_mode = 1
-anchors_preset = -1
-anchor_top = 0.451256
+anchor_top = 0.0914573
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/panel_Center/content_Wallet/content_Login"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.175
+anchor_top = 0.0840708
+anchor_right = 0.826389
+anchor_bottom = 0.522124
+offset_bottom = 3.05176e-05
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 10
+metadata/_edit_use_anchors_ = true
+
+[node name="label_Info" type="Label" parent="Control/panel_Center/content_Wallet/content_Login/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 15
+text = "In the future, you will choose your transit service."
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="ob_TransitService" type="OptionButton" parent="Control/panel_Center/content_Wallet/content_Login/VBoxContainer"]
+layout_mode = 2
+focus_mode = 0
+disabled = true
+item_count = 1
+selected = 0
+popup/item_0/text = "Lynx PawPass"
+popup/item_0/id = 0
+
+[node name="le_Email" type="LineEdit" parent="Control/panel_Center/content_Wallet/content_Login/VBoxContainer"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+placeholder_text = "Email"
+
+[node name="le_Password" type="LineEdit" parent="Control/panel_Center/content_Wallet/content_Login/VBoxContainer"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+placeholder_text = "Password"
+
+[node name="btn_Login" type="Button" parent="Control/panel_Center/content_Wallet/content_Login/VBoxContainer"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+text = "Login"
+metadata/_edit_use_anchors_ = true
+
+[node name="content_Account" type="Control" parent="Control/panel_Center/content_Wallet"]
+visible = false
+layout_mode = 1
+anchor_top = 0.0914573
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control/panel_Center/content_Wallet/content_Account"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.0277778
+anchor_top = 0.108407
+anchor_right = 0.972222
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 50
+metadata/_edit_use_anchors_ = true
+
+[node name="vb_Navigation" type="VBoxContainer" parent="Control/panel_Center/content_Wallet/content_Account/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+metadata/_edit_use_anchors_ = true
+
+[node name="btn_AccountHome" type="Button" parent="Control/panel_Center/content_Wallet/content_Account/HBoxContainer/vb_Navigation"]
+custom_minimum_size = Vector2(150, 45)
+layout_mode = 2
+text = "Account Home"
+
+[node name="btn_ManagePayments" type="Button" parent="Control/panel_Center/content_Wallet/content_Account/HBoxContainer/vb_Navigation"]
+custom_minimum_size = Vector2(150, 45)
+layout_mode = 2
+text = "Manage Payments"
+
+[node name="btn_BuyTickets" type="Button" parent="Control/panel_Center/content_Wallet/content_Account/HBoxContainer/vb_Navigation"]
+custom_minimum_size = Vector2(150, 45)
+layout_mode = 2
+text = "Buy Tickets"
+
+[node name="btn_MyTickets" type="Button" parent="Control/panel_Center/content_Wallet/content_Account/HBoxContainer/vb_Navigation"]
+custom_minimum_size = Vector2(150, 45)
+layout_mode = 2
+text = "My Tickets"
+
+[node name="btn_MyDevices" type="Button" parent="Control/panel_Center/content_Wallet/content_Account/HBoxContainer/vb_Navigation"]
+custom_minimum_size = Vector2(150, 45)
+layout_mode = 2
+text = "My Devices"
+
+[node name="btn_ExpiredTickets" type="Button" parent="Control/panel_Center/content_Wallet/content_Account/HBoxContainer/vb_Navigation"]
+custom_minimum_size = Vector2(150, 45)
+layout_mode = 2
+text = "Expired Tickets"
+
+[node name="btn_OrderHistory" type="Button" parent="Control/panel_Center/content_Wallet/content_Account/HBoxContainer/vb_Navigation"]
+custom_minimum_size = Vector2(150, 45)
+layout_mode = 2
+text = "Order History"
+
+[node name="btn_AccountLogout" type="Button" parent="Control/panel_Center/content_Wallet/content_Account/HBoxContainer/vb_Navigation"]
+custom_minimum_size = Vector2(150, 45)
+layout_mode = 2
+text = "Change Password"
+
+[node name="Button9" type="Button" parent="Control/panel_Center/content_Wallet/content_Account/HBoxContainer/vb_Navigation"]
+custom_minimum_size = Vector2(150, 45)
+layout_mode = 2
+text = "Logout"
+
+[node name="vb_AccountHome" type="VBoxContainer" parent="Control/panel_Center/content_Wallet/content_Account/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 10
+metadata/_edit_use_anchors_ = true
+
+[node name="label_Title" type="Label" parent="Control/panel_Center/content_Wallet/content_Account/HBoxContainer/vb_AccountHome"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "Your Account"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="label_Email" type="Label" parent="Control/panel_Center/content_Wallet/content_Account/HBoxContainer/vb_AccountHome"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Email Address: N/A"
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="label_College" type="Label" parent="Control/panel_Center/content_Wallet/content_Account/HBoxContainer/vb_AccountHome"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "College Status: N/A"
+vertical_alignment = 1
 metadata/_edit_use_anchors_ = true
 
 [node name="content_Settings" type="Control" parent="Control/panel_Center"]
@@ -946,7 +1052,7 @@ metadata/_edit_use_anchors_ = true
 [connection signal="tile_loaded" from="Control/panel_Center/content_Explore/Map/VBoxContainer/SubViewportContainer/SubViewport/Map/MapTileLoader" to="Control/panel_Center/content_Explore/Map/VBoxContainer/SubViewportContainer/SubViewport/Map" method="_on_tile_loaded"]
 [connection signal="value_changed" from="Control/panel_Center/content_Explore/MapNav/VBoxContainer/vs_Zoom" to="." method="_on_vs_zoom_value_changed"]
 [connection signal="pressed" from="Control/panel_Center/content_Explore/MapNav/VBoxContainer/btn_Location3" to="." method="_on_btn_location_pressed"]
-[connection signal="pressed" from="Control/panel_Center/content_Wallet/btn_Login" to="." method="_on_btn_login_pressed"]
+[connection signal="pressed" from="Control/panel_Center/content_Wallet/content_Login/VBoxContainer/btn_Login" to="." method="_on_btn_login_pressed"]
 [connection signal="item_selected" from="Control/panel_Center/content_Settings/VBoxContainer/ob_MapProvider" to="." method="_on_ob_map_provider_item_selected"]
 [connection signal="item_selected" from="Control/panel_Center/content_Settings/VBoxContainer/ob_LocationProvider" to="." method="_on_ob_location_provider_item_selected"]
 [connection signal="pressed" from="Control/panel_Center/content_Settings/VBoxContainer/hb_OtherSettingsNav/btn_OtherSettingsBack" to="." method="_on_btn_other_settings_back_pressed"]

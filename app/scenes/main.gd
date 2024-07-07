@@ -38,6 +38,9 @@ func _ready():
 		).on_failure(
 			func( _response ): print("Failure to GET_ROUTES")
 		).fetch()
+	if user_data.has("transit_account"):
+		$Control/panel_Center/content_Wallet/content_Login.visible = false
+		$Control/panel_Center/content_Wallet/content_Account.visible = true
 	#var lastKnownLocation = user_data["lastKnownLocation"]
 	#if lastKnownLocation != null:
 		#MAP.latitude = lastKnownLocation["latitude"]
@@ -236,8 +239,11 @@ func _on_vs_zoom_value_changed(value):
 		#MAP.longitude = lastKnownLocation["longitude"]
 
 func _on_btn_login_pressed():
-	var username = $Control/panel_Center/content_Wallet/le_Email.text
-	var password = $Control/panel_Center/content_Wallet/le_Password.text
+	$Control/panel_Center/content_Wallet/content_Login/VBoxContainer/le_Email.editable = false
+	$Control/panel_Center/content_Wallet/content_Login/VBoxContainer/le_Password.editable = false
+	$Control/panel_Center/content_Wallet/content_Login/VBoxContainer/btn_Login.disabled = true
+	var username = $Control/panel_Center/content_Wallet/content_Login/VBoxContainer/le_Email.text
+	var password = $Control/panel_Center/content_Wallet/content_Login/VBoxContainer/le_Password.text
 	var body
 	$HTTPManager.job(
 		"https://www.lynxpawpass.com/members/login/"
@@ -252,12 +258,9 @@ func _on_btn_login_pressed():
 					"CT_Main_0$txtUsername": username,
 					"CT_Main_0$txtPassword": password,
 					"CT_Main_0$btnLogin": "Login",
-					"__VIEWSTATEGENERATOR": "3989C74E"
 				}
-			#$HTTPManager.use_proxy = true
-			print($HTTPManager._cookies)
 			$HTTPManager.job(
-				"http://www.lynxpawpass.com/members/login/"
+				"https://www.lynxpawpass.com/members/login/"
 			).add_header( # set_cookie not working
 				"Cookie", "ASP.NET_SessionId="+$HTTPManager._cookies["www.lynxpawpass.com"]["ASP.NET_SessionId"].get("value")+"; __RequestVerificationToken="+$HTTPManager._cookies["www.lynxpawpass.com"]["__RequestVerificationToken"].get("value")+";"
 			).add_header(
@@ -266,48 +269,29 @@ func _on_btn_login_pressed():
 				"User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.6478.127 Safari/537.36"
 			).add_header(
 				"Content-Type", "application/x-www-form-urlencoded"
-			).add_header(
-				"Referer", "https://www.lynxpawpass.com/members/login/"
-			).add_header(
-				"Connection", "keep-alive"
-			).add_header(
-				"Sec-Fetch-Site", "same-origin"
-			).add_header(
-				"Sec-Fetch-Mode", "navigate"
-			).add_header(
-				"Sec-Fetch-User", "?1"
-			).add_header(
-				"Sec-Fetch-Dest", "document"
-			).add_header(
-				"Origin", "https://www.lynxpawpass.com"
-			).add_header(
-				"Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7"
-			).add_header(
-				"Accept-Encoding", "gzip, deflate, br"
-			).add_header(
-				"Priority", "u=0, i"
-			).add_header(
-				"Sec-Ch-Ua", '"Not/A)Brand";v="8", "Chromium";v="126"'
-			).add_header(
-				"Cache-Control", "max-age=0"
-			).add_header(
-				"Sec-Ch-Ua-Platform", '"Linux"'
-			).add_header(
-				"Upgrade-Insecure-Requests", "1"
 			).add_post(
 				data
 			).on_success(
-				func( _response ): 
-					print(_response.fetch())
+				func( _response ):
+					print("this should not happen, should return 500 internal.. if you read this PLEASE open an issue for investigation!!!!")
+			).on_failure(
+				func( _response ):
+					data.erase("CT_Main_0$txtUsername")
+					data.erase("CT_Main_0$txtPassword")
+					data.erase("CT_Main_0$btnLogin")
+					data["Cookie"] = "ASP.NET_SessionId="+$HTTPManager._cookies["www.lynxpawpass.com"]["ASP.NET_SessionId"].get("value")+"; __RequestVerificationToken="+$HTTPManager._cookies["www.lynxpawpass.com"]["__RequestVerificationToken"].get("value")+";"
+					user_data["transit_account"] = data
+					save_data()
 					$HTTPManager.job(
 						"https://www.lynxpawpass.com/members/"
 					).on_success(
 						func( _response ): 
-							print(_response.fetch())
-							print('success')
+							body = _response.fetch()
+							var collegestatus
+							$Control/panel_Center/content_Wallet/content_Account/HBoxContainer/vb_AccountHome/label_Email.text = "Email Address: "+username
+							$Control/panel_Center/content_Wallet/content_Login.visible = false
+							$Control/panel_Center/content_Wallet/content_Account.visible = true
 					).fetch()
-			).on_failure(
-				func( _response ): print('failure'); print(_response.fetch())
 			).fetch()
 	).fetch()
 
