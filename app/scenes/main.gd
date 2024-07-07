@@ -11,7 +11,7 @@ var location_watcher:LocationWatcher
 @onready var MAP = $Control/panel_Center/content_Explore/Map/VBoxContainer/SubViewportContainer/SubViewport/Map
 @onready var MAP_LOADER = $Control/panel_Center/content_Explore/Map/VBoxContainer/SubViewportContainer/SubViewport/Map/MapTileLoader
 @onready var HTTP = $HTTPRequest
-var friendly_name = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.6478.57 Safari/537.36"#"Mozilla/5.0 (Android 13; Mobile; rv:109.0) Gecko/114.0 Firefox/114.0"
+var friendly_name = "Mozilla/5.0 (Windows NT 10.0; rv:127.0) Gecko/20100101 Firefox/127.0"
 
 var latest_retrieve_token
 var http_requests = {
@@ -244,31 +244,61 @@ func _on_btn_login_pressed():
 	).on_success( 
 		func(response): 
 			body = response.fetch()
-			print($HTTPManager._cookies["www.lynxpawpass.com"]["ASP.NET_SessionId"].get("value"))
-			var data = {
-					"__RequestVerificationToken": $HTTPManager._cookies["www.lynxpawpass.com"]["__RequestVerificationToken"].get("value"),
+			# xml parser godot has might use later
+			var data = { #requesttoken has two versions, one in body other in cookie
+					"__RequestVerificationToken": body.split('<input name="__RequestVerificationToken" type="hidden" value="')[1].split('" />')[0],
 					"__EVENTVALIDATION": body.split('<input type="hidden" name="__EVENTVALIDATION" id="__EVENTVALIDATION" value="')[1].split('" />')[0],
 					"__VIEWSTATE": body.split('<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="')[1].split('" /></div></form>')[0],
 					"CT_Main_0$txtUsername": username,
 					"CT_Main_0$txtPassword": password,
-					"CT_Main_0$btnLogin": "Login"
+					"CT_Main_0$btnLogin": "Login",
+					"__VIEWSTATEGENERATOR": "3989C74E"
 				}
+			#$HTTPManager.use_proxy = true
+			print($HTTPManager._cookies)
 			$HTTPManager.job(
 				"http://www.lynxpawpass.com/members/login/"
 			).add_header( # set_cookie not working
-				"Cookie", "ASP.NET_SessionId="+$HTTPManager._cookies["www.lynxpawpass.com"]["ASP.NET_SessionId"].get("value")+"; "+"__RequestVerificationToken="+$HTTPManager._cookies["www.lynxpawpass.com"]["__RequestVerificationToken"].get("value")+";"
+				"Cookie", "ASP.NET_SessionId="+$HTTPManager._cookies["www.lynxpawpass.com"]["ASP.NET_SessionId"].get("value")+"; __RequestVerificationToken="+$HTTPManager._cookies["www.lynxpawpass.com"]["__RequestVerificationToken"].get("value")+";"
 			).add_header(
 				"Host", "www.lynxpawpass.com"
 			).add_header(
-				"User-Agent", friendly_name
+				"User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.6478.127 Safari/537.36"
 			).add_header(
 				"Content-Type", "application/x-www-form-urlencoded"
 			).add_header(
 				"Referer", "https://www.lynxpawpass.com/members/login/"
+			).add_header(
+				"Connection", "keep-alive"
+			).add_header(
+				"Sec-Fetch-Site", "same-origin"
+			).add_header(
+				"Sec-Fetch-Mode", "navigate"
+			).add_header(
+				"Sec-Fetch-User", "?1"
+			).add_header(
+				"Sec-Fetch-Dest", "document"
+			).add_header(
+				"Origin", "https://www.lynxpawpass.com"
+			).add_header(
+				"Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7"
+			).add_header(
+				"Accept-Encoding", "gzip, deflate, br"
+			).add_header(
+				"Priority", "u=0, i"
+			).add_header(
+				"Sec-Ch-Ua", '"Not/A)Brand";v="8", "Chromium";v="126"'
+			).add_header(
+				"Cache-Control", "max-age=0"
+			).add_header(
+				"Sec-Ch-Ua-Platform", '"Linux"'
+			).add_header(
+				"Upgrade-Insecure-Requests", "1"
 			).add_post(
 				data
 			).on_success(
 				func( _response ): 
+					print(_response.fetch())
 					$HTTPManager.job(
 						"https://www.lynxpawpass.com/members/"
 					).on_success(

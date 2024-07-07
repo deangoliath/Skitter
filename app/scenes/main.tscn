@@ -109,6 +109,7 @@ script = ExtResource("1_gku82")
 [node name="HTTPManager" type="Node" parent="."]
 script = ExtResource("3_vdrhb")
 accept_cookies = true
+print_debug = true
 
 [node name="HTTPRequest" type="HTTPRequest" parent="."]
 
@@ -191,7 +192,6 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_p71hb")
 metadata/_edit_use_anchors_ = true
 
 [node name="content_Explore" type="Control" parent="Control/panel_Center"]
-visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -264,7 +264,7 @@ transparent_bg = true
 handle_input_locally = false
 snap_2d_transforms_to_pixel = true
 physics_object_picking = true
-render_target_update_mode = 0
+render_target_update_mode = 4
 script = ExtResource("10_467ch")
 
 [node name="Map" type="Node2D" parent="Control/panel_Center/content_Explore/Map/VBoxContainer/SubViewportContainer/SubViewport"]
@@ -508,6 +508,7 @@ size_flags_vertical = 3
 theme_override_constants/v_separation = 3
 
 [node name="content_Wallet" type="Control" parent="Control/panel_Center"]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
