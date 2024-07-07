@@ -59,7 +59,7 @@ func _ready():
 		#var singleton = Engine.get_singleton("Geolocation")
 		#singleton.helloWorld()
 	while true:
-		await get_tree().create_timer(50).timeout # ideally every half minute plus one
+		await get_tree().create_timer(1).timeout # ideally every half minute plus one
 		$HTTPManager.job(
 		host+"/get_feed/"
 		).on_success(
