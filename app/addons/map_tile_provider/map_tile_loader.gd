@@ -27,7 +27,7 @@ static var FORMATS := [
 
 
 @export var custom_fields := {}
-@export var user_agent := "OpenLynx "+str(ProjectSettings.get_setting("version"))
+@export var user_agent := "OpenLynx/"+str(ProjectSettings.get_setting("application/config/version"))+" OS/0 (Linux; Android "+str(OS.get_version())+"; 0 Build/0)"
 @export var allow_network := true
 @export var cache_tiles := false
 @export var tile_provider: Provider:

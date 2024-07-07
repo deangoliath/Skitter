@@ -11,8 +11,8 @@ var location_watcher:LocationWatcher
 @onready var MAP = $Control/panel_Center/content_Explore/Map/VBoxContainer/SubViewportContainer/SubViewport/Map
 @onready var MAP_LOADER = $Control/panel_Center/content_Explore/Map/VBoxContainer/SubViewportContainer/SubViewport/Map/MapTileLoader
 @onready var HTTP = $HTTPRequest
-var friendly_name = "Mozilla/5.0 (Windows NT 10.0; rv:127.0) Gecko/20100101 Firefox/127.0"
-
+#var friendly_name = "Mozilla/5.0 (Windows NT 10.0; rv:127.0) Gecko/20100101 Firefox/127.0"
+var friendly_name = "OpenLynx/"+str(ProjectSettings.get_setting("application/config/version"))+" OS/0 (Linux; Android "+str(OS.get_version())+"; 0 Build/0)"
 var latest_retrieve_token
 var http_requests = {
 	"example_token": "data"
@@ -22,6 +22,7 @@ var http_occupied = false
 @onready var user_data = {"update_vehicle_positions": true, "lastKnownLocation": null, "map_provider": [0, MAP_LOADER.Provider.JAWG], "location_provider": [0, "FUSED"]}
 
 func _ready():
+	print(friendly_name)
 	load_data()
 	# check if internet connectivity here before issuing http requests
 	$HTTPManager.job(
@@ -38,9 +39,6 @@ func _ready():
 		).on_failure(
 			func( _response ): print("Failure to GET_ROUTES")
 		).fetch()
-	if user_data.has("transit_account"):
-		$Control/panel_Center/content_Wallet/content_Login.visible = false
-		$Control/panel_Center/content_Wallet/content_Account.visible = true
 	#var lastKnownLocation = user_data["lastKnownLocation"]
 	#if lastKnownLocation != null:
 		#MAP.latitude = lastKnownLocation["latitude"]
@@ -57,9 +55,9 @@ func _ready():
 		geolocation_api.heading_update.connect(_on_heading_update, 0)
 		geolocation_api.set_failure_timeout(5) #optional
 		geolocation_api.set_debug_log_signal(true) #optional
-	if Engine.has_singleton("Geolocation"):
-		var singleton = Engine.get_singleton("Geolocation")
-		singleton.helloWorld()
+	#if Engine.has_singleton("Geolocation"):
+		#var singleton = Engine.get_singleton("Geolocation")
+		#singleton.helloWorld()
 	while true:
 		await get_tree().create_timer(50).timeout # ideally every half minute plus one
 		$HTTPManager.job(
@@ -126,8 +124,33 @@ func load_data():
 	$Control/panel_Center/content_Settings/VBoxContainer/ob_MapProvider.select(user_data["map_provider"][0])
 	MAP_LOADER.tile_provider = user_data["map_provider"][1]
 	$Control/panel_Center/content_Settings/VBoxContainer/ob_LocationProvider.select(user_data["location_provider"][0])
-	if Engine.has_singleton("Geolocation"):
-		geolocation_api.set_location_provider(user_data["location_provider"][1])
+	#if Engine.has_singleton("Geolocation"):
+		#geolocation_api.set_location_provider(user_data["location_provider"][1])
+	if user_data.has("transit_account"):
+		$HTTPManager.job(
+		"https://www.lynxpawpass.com/members/"
+		).add_header(
+		"Cookie", user_data["transit_account"]["Cookie"]
+		).add_header(
+			"Host", "www.lynxpawpass.com"
+		).add_header(
+			"User-Agent", friendly_name
+		).on_success(
+			func( _response ):
+				print("barbie")
+				print(_response.fetch().split('Email Address:').size())
+				if _response.fetch().split('Email Address:').size() > 1:
+					var emailaddress = _response.fetch().split('Email Address:')[1].split('<div class="formContent">')[1].split('</div>')[0]
+					var collegestatus
+					$Control/panel_Center/content_Wallet/content_Account/HBoxContainer/vb_AccountHome/label_Email.text = emailaddress
+					$Control/panel_Center/content_Wallet/content_Login.visible = false
+					$Control/panel_Center/content_Wallet/content_Account.visible = true
+				else:
+					user_data.erase("transit_account")
+					save_data()
+		).on_failure(
+			func( _response ): print("Failure to www.lynxpawpass.com/members/")
+		).fetch()
 
 func save_data():
 	var file = FileAccess.open("user://user_data.json", FileAccess.WRITE)
@@ -266,14 +289,15 @@ func _on_btn_login_pressed():
 			).add_header(
 				"Host", "www.lynxpawpass.com"
 			).add_header(
-				"User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.6478.127 Safari/537.36"
+				"User-Agent", friendly_name
 			).add_header(
 				"Content-Type", "application/x-www-form-urlencoded"
 			).add_post(
 				data
 			).on_success(
 				func( _response ):
-					print("this should not happen, should return 500 internal.. if you read this PLEASE open an issue for investigation!!!!")
+					print("this one means failure")
+					#print("this should not happen, should return 500 internal.. if you read this PLEASE open an issue for investigation!!!!")
 			).on_failure(
 				func( _response ):
 					data.erase("CT_Main_0$txtUsername")
@@ -288,7 +312,7 @@ func _on_btn_login_pressed():
 						func( _response ): 
 							body = _response.fetch()
 							var collegestatus
-							$Control/panel_Center/content_Wallet/content_Account/HBoxContainer/vb_AccountHome/label_Email.text = "Email Address: "+username
+							$Control/panel_Center/content_Wallet/content_Account/HBoxContainer/vb_AccountHome/label_Email.text = username
 							$Control/panel_Center/content_Wallet/content_Login.visible = false
 							$Control/panel_Center/content_Wallet/content_Account.visible = true
 					).fetch()
@@ -369,3 +393,72 @@ func _on_btn_other_settings_back_pressed():
 		$Control/panel_Center/content_Settings/VBoxContainer/hb_OtherSettingsNav/btn_OtherSettingsBack.disabled = true
 	if tabs.current_tab+1 <= tabs.get_tab_count():
 		$Control/panel_Center/content_Settings/VBoxContainer/hb_OtherSettingsNav/btn_OtherSettingsNext.disabled = false
+
+# this will all be organized into sections in this script
+func hide_all_account_pages():
+	$Control/panel_Center/content_Wallet/content_Account/HBoxContainer/vb_AccountHome.visible = false
+	$Control/panel_Center/content_Wallet/content_Account/HBoxContainer/vb_ManagePayments.visible = false
+	$Control/panel_Center/content_Wallet/content_Account/HBoxContainer/vb_BuyTickets.visible = false
+	$Control/panel_Center/content_Wallet/content_Account/HBoxContainer/vb_MyTickets.visible = false
+	$Control/panel_Center/content_Wallet/content_Account/HBoxContainer/vb_MyDevices.visible = false
+	$Control/panel_Center/content_Wallet/content_Account/HBoxContainer/vb_ExpiredTickets.visible = false
+	$Control/panel_Center/content_Wallet/content_Account/HBoxContainer/vb_OrderHistory.visible = false
+	$Control/panel_Center/content_Wallet/content_Account/HBoxContainer/vb_ChangePassword.visible = false
+	$Control/panel_Center/content_Wallet/content_Account/HBoxContainer/vb_AccountLogout.visible = false
+
+func _on_btn_account_home_pressed():
+	hide_all_account_pages()
+	$Control/panel_Center/content_Wallet/content_Account/HBoxContainer/vb_AccountHome.visible = true
+
+func _on_btn_manage_payments_pressed():
+	hide_all_account_pages()
+	$Control/panel_Center/content_Wallet/content_Account/HBoxContainer/vb_ManagePayments.visible = true
+
+func _on_btn_buy_tickets_pressed():
+	hide_all_account_pages()
+	$Control/panel_Center/content_Wallet/content_Account/HBoxContainer/vb_BuyTickets.visible = true
+
+func _on_btn_my_tickets_pressed():
+	hide_all_account_pages()
+	$Control/panel_Center/content_Wallet/content_Account/HBoxContainer/vb_MyTickets.visible = true
+
+func _on_btn_my_devices_pressed():
+	hide_all_account_pages()
+	$Control/panel_Center/content_Wallet/content_Account/HBoxContainer/vb_MyDevices.visible = true
+
+func _on_btn_expired_tickets_pressed():
+	hide_all_account_pages()
+	$Control/panel_Center/content_Wallet/content_Account/HBoxContainer/vb_ExpiredTickets.visible = true
+
+func _on_btn_order_history_pressed():
+	hide_all_account_pages()
+	$Control/panel_Center/content_Wallet/content_Account/HBoxContainer/vb_OrderHistory.visible = true
+
+func _on_btn_change_password_pressed():
+	hide_all_account_pages()
+	$Control/panel_Center/content_Wallet/content_Account/HBoxContainer/vb_ChangePassword.visible = true
+
+func _on_btn_account_logout_pressed():
+	hide_all_account_pages()
+	$Control/panel_Center/content_Wallet/content_Account/HBoxContainer/vb_AccountLogout.visible = true
+	$HTTPManager.job(
+		"https://www.lynxpawpass.com/members/logout/"
+	).add_header(
+		"Cookie", user_data["transit_account"]["Cookie"]
+	).add_header(
+		"Host", "www.lynxpawpass.com"
+	).add_header(
+		"User-Agent", friendly_name
+	).on_failure(
+		func( _response ):
+			print("logout error")
+	).fetch()
+	user_data.erase("transit_account")
+	save_data()
+	$Control/panel_Center/content_Wallet/content_Account/HBoxContainer/vb_AccountLogout.visible = false
+	$Control/panel_Center/content_Wallet/content_Account/HBoxContainer/vb_AccountHome.visible = true
+	$Control/panel_Center/content_Wallet/content_Account.visible = false
+	$Control/panel_Center/content_Wallet/content_Login.visible = true
+	$Control/panel_Center/content_Wallet/content_Login/VBoxContainer/le_Email.editable = true
+	$Control/panel_Center/content_Wallet/content_Login/VBoxContainer/le_Password.editable = true
+	$Control/panel_Center/content_Wallet/content_Login/VBoxContainer/btn_Login.disabled = false

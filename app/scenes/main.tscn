@@ -1,4 +1,4 @@
-[gd_scene load_steps=35 format=3 uid="uid://d4ngqa3sdmho5"]
+[gd_scene load_steps=40 format=3 uid="uid://d4ngqa3sdmho5"]
 
 [ext_resource type="Script" path="res://scenes/main.gd" id="1_gku82"]
 [ext_resource type="Texture2D" uid="uid://nbahugvq5a1j" path="res://assets/icons/interface/settings.png" id="3_ujg57"]
@@ -83,6 +83,49 @@ corner_radius_top_left = 15
 corner_radius_top_right = 15
 corner_radius_bottom_right = 15
 corner_radius_bottom_left = 15
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2co27"]
+draw_center = false
+border_width_bottom = 4
+border_color = Color(0.217101, 0.217101, 0.217101, 1)
+corner_radius_bottom_right = 50
+corner_radius_bottom_left = 50
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jg3dy"]
+bg_color = Color(0.140447, 0.140447, 0.140447, 1)
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+expand_margin_left = 10.0
+expand_margin_right = 10.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_628qu"]
+bg_color = Color(0.18359, 0.183591, 0.18359, 1)
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+expand_margin_left = 10.0
+expand_margin_right = 10.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3b6c1"]
+bg_color = Color(0.169245, 0.169245, 0.169245, 1)
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+expand_margin_left = 10.0
+expand_margin_right = 10.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gnayu"]
+bg_color = Color(0.18359, 0.183591, 0.18359, 1)
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+expand_margin_left = 10.0
+expand_margin_right = 10.0
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_meurp"]
 
@@ -519,9 +562,10 @@ grow_vertical = 2
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
-anchor_bottom = 0.0914573
+anchor_bottom = 0.0844221
 grow_horizontal = 2
 theme_override_font_sizes/font_size = 30
+theme_override_styles/normal = SubResource("StyleBoxFlat_2co27")
 text = "Find your passes and fares here"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -529,12 +573,11 @@ metadata/_edit_use_anchors_ = true
 
 [node name="content_Login" type="Control" parent="Control/panel_Center/content_Wallet"]
 layout_mode = 1
-anchor_top = 0.0914573
+anchor_top = 0.103518
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-metadata/_edit_use_anchors_ = true
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Control/panel_Center/content_Wallet/content_Login"]
 layout_mode = 1
@@ -588,17 +631,16 @@ layout_mode = 1
 anchor_top = 0.0914573
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_top = 12.0
 grow_horizontal = 2
 grow_vertical = 2
-metadata/_edit_use_anchors_ = true
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Control/panel_Center/content_Wallet/content_Account"]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.0277778
-anchor_top = 0.108407
 anchor_right = 0.972222
-anchor_bottom = 1.0
+anchor_bottom = 0.96792
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 50
@@ -610,48 +652,102 @@ theme_override_constants/separation = 10
 metadata/_edit_use_anchors_ = true
 
 [node name="btn_AccountHome" type="Button" parent="Control/panel_Center/content_Wallet/content_Account/HBoxContainer/vb_Navigation"]
-custom_minimum_size = Vector2(150, 45)
+custom_minimum_size = Vector2(150, 60)
 layout_mode = 2
+size_flags_vertical = 3
+focus_mode = 0
+theme_override_font_sizes/font_size = 25
+theme_override_styles/normal = SubResource("StyleBoxFlat_jg3dy")
+theme_override_styles/hover = SubResource("StyleBoxFlat_628qu")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_3b6c1")
 text = "Account Home"
 
 [node name="btn_ManagePayments" type="Button" parent="Control/panel_Center/content_Wallet/content_Account/HBoxContainer/vb_Navigation"]
-custom_minimum_size = Vector2(150, 45)
+custom_minimum_size = Vector2(150, 60)
 layout_mode = 2
-text = "Manage Payments"
+size_flags_vertical = 3
+focus_mode = 0
+theme_override_font_sizes/font_size = 25
+theme_override_styles/normal = SubResource("StyleBoxFlat_jg3dy")
+theme_override_styles/hover = SubResource("StyleBoxFlat_gnayu")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_3b6c1")
+text = "Payments"
 
 [node name="btn_BuyTickets" type="Button" parent="Control/panel_Center/content_Wallet/content_Account/HBoxContainer/vb_Navigation"]
-custom_minimum_size = Vector2(150, 45)
+custom_minimum_size = Vector2(150, 60)
 layout_mode = 2
+size_flags_vertical = 3
+focus_mode = 0
+theme_override_font_sizes/font_size = 25
+theme_override_styles/normal = SubResource("StyleBoxFlat_jg3dy")
+theme_override_styles/hover = SubResource("StyleBoxFlat_gnayu")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_3b6c1")
 text = "Buy Tickets"
 
 [node name="btn_MyTickets" type="Button" parent="Control/panel_Center/content_Wallet/content_Account/HBoxContainer/vb_Navigation"]
-custom_minimum_size = Vector2(150, 45)
+custom_minimum_size = Vector2(150, 60)
 layout_mode = 2
+size_flags_vertical = 3
+focus_mode = 0
+theme_override_font_sizes/font_size = 25
+theme_override_styles/normal = SubResource("StyleBoxFlat_jg3dy")
+theme_override_styles/hover = SubResource("StyleBoxFlat_gnayu")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_3b6c1")
 text = "My Tickets"
 
 [node name="btn_MyDevices" type="Button" parent="Control/panel_Center/content_Wallet/content_Account/HBoxContainer/vb_Navigation"]
-custom_minimum_size = Vector2(150, 45)
+custom_minimum_size = Vector2(150, 60)
 layout_mode = 2
+size_flags_vertical = 3
+focus_mode = 0
+theme_override_font_sizes/font_size = 25
+theme_override_styles/normal = SubResource("StyleBoxFlat_jg3dy")
+theme_override_styles/hover = SubResource("StyleBoxFlat_gnayu")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_3b6c1")
 text = "My Devices"
 
 [node name="btn_ExpiredTickets" type="Button" parent="Control/panel_Center/content_Wallet/content_Account/HBoxContainer/vb_Navigation"]
-custom_minimum_size = Vector2(150, 45)
+custom_minimum_size = Vector2(150, 60)
 layout_mode = 2
+size_flags_vertical = 3
+focus_mode = 0
+theme_override_font_sizes/font_size = 25
+theme_override_styles/normal = SubResource("StyleBoxFlat_jg3dy")
+theme_override_styles/hover = SubResource("StyleBoxFlat_gnayu")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_3b6c1")
 text = "Expired Tickets"
 
 [node name="btn_OrderHistory" type="Button" parent="Control/panel_Center/content_Wallet/content_Account/HBoxContainer/vb_Navigation"]
-custom_minimum_size = Vector2(150, 45)
+custom_minimum_size = Vector2(150, 60)
 layout_mode = 2
+size_flags_vertical = 3
+focus_mode = 0
+theme_override_font_sizes/font_size = 25
+theme_override_styles/normal = SubResource("StyleBoxFlat_jg3dy")
+theme_override_styles/hover = SubResource("StyleBoxFlat_gnayu")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_3b6c1")
 text = "Order History"
 
-[node name="btn_AccountLogout" type="Button" parent="Control/panel_Center/content_Wallet/content_Account/HBoxContainer/vb_Navigation"]
-custom_minimum_size = Vector2(150, 45)
+[node name="btn_ChangePassword" type="Button" parent="Control/panel_Center/content_Wallet/content_Account/HBoxContainer/vb_Navigation"]
+custom_minimum_size = Vector2(150, 60)
 layout_mode = 2
+size_flags_vertical = 3
+focus_mode = 0
+theme_override_font_sizes/font_size = 25
+theme_override_styles/normal = SubResource("StyleBoxFlat_jg3dy")
+theme_override_styles/hover = SubResource("StyleBoxFlat_gnayu")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_3b6c1")
 text = "Change Password"
 
-[node name="Button9" type="Button" parent="Control/panel_Center/content_Wallet/content_Account/HBoxContainer/vb_Navigation"]
-custom_minimum_size = Vector2(150, 45)
+[node name="btn_AccountLogout" type="Button" parent="Control/panel_Center/content_Wallet/content_Account/HBoxContainer/vb_Navigation"]
+custom_minimum_size = Vector2(150, 60)
 layout_mode = 2
+size_flags_vertical = 3
+focus_mode = 0
+theme_override_font_sizes/font_size = 25
+theme_override_styles/normal = SubResource("StyleBoxFlat_jg3dy")
+theme_override_styles/hover = SubResource("StyleBoxFlat_gnayu")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_3b6c1")
 text = "Logout"
 
 [node name="vb_AccountHome" type="VBoxContainer" parent="Control/panel_Center/content_Wallet/content_Account/HBoxContainer"]
@@ -668,10 +764,19 @@ horizontal_alignment = 1
 vertical_alignment = 1
 metadata/_edit_use_anchors_ = true
 
+[node name="label_EmailTitle" type="Label" parent="Control/panel_Center/content_Wallet/content_Account/HBoxContainer/vb_AccountHome"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Email Address"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
 [node name="label_Email" type="Label" parent="Control/panel_Center/content_Wallet/content_Account/HBoxContainer/vb_AccountHome"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 20
-text = "Email Address: N/A"
+text = "(retrieving data)"
+horizontal_alignment = 1
 vertical_alignment = 1
 metadata/_edit_use_anchors_ = true
 
@@ -679,6 +784,288 @@ metadata/_edit_use_anchors_ = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 20
 text = "College Status: N/A"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="label_College2" type="Label" parent="Control/panel_Center/content_Wallet/content_Account/HBoxContainer/vb_AccountHome"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 15
+text = "*Valencia College students ride for free! (show id)"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="vb_ManagePayments" type="VBoxContainer" parent="Control/panel_Center/content_Wallet/content_Account/HBoxContainer"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 10
+metadata/_edit_use_anchors_ = true
+
+[node name="label_Title" type="Label" parent="Control/panel_Center/content_Wallet/content_Account/HBoxContainer/vb_ManagePayments"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "Manage Payments"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="vb_Content" type="VBoxContainer" parent="Control/panel_Center/content_Wallet/content_Account/HBoxContainer/vb_ManagePayments"]
+layout_mode = 2
+theme_override_constants/separation = 10
+metadata/_edit_use_anchors_ = true
+
+[node name="label_Info" type="Label" parent="Control/panel_Center/content_Wallet/content_Account/HBoxContainer/vb_ManagePayments/vb_Content"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 15
+text = "Select default payment method"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="OptionButton" type="OptionButton" parent="Control/panel_Center/content_Wallet/content_Account/HBoxContainer/vb_ManagePayments/vb_Content"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+disabled = true
+item_count = 1
+selected = 0
+popup/item_0/text = "None attached to this account"
+popup/item_0/id = 0
+
+[node name="btn_SavePayment" type="Button" parent="Control/panel_Center/content_Wallet/content_Account/HBoxContainer/vb_ManagePayments/vb_Content"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+text = "Save"
+metadata/_edit_use_anchors_ = true
+
+[node name="vb_BuyTickets" type="VBoxContainer" parent="Control/panel_Center/content_Wallet/content_Account/HBoxContainer"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 15
+metadata/_edit_use_anchors_ = true
+
+[node name="label_Title" type="Label" parent="Control/panel_Center/content_Wallet/content_Account/HBoxContainer/vb_BuyTickets"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "Buy Tickets"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="label_Info" type="Label" parent="Control/panel_Center/content_Wallet/content_Account/HBoxContainer/vb_BuyTickets"]
+custom_minimum_size = Vector2(1, 1)
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "When using reduced fare tickets, presentation of valid identification will also be required."
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+metadata/_edit_use_anchors_ = true
+
+[node name="vb_Content" type="VBoxContainer" parent="Control/panel_Center/content_Wallet/content_Account/HBoxContainer/vb_BuyTickets"]
+layout_mode = 2
+theme_override_constants/separation = 10
+metadata/_edit_use_anchors_ = true
+
+[node name="btn_StandardTicket" type="Button" parent="Control/panel_Center/content_Wallet/content_Account/HBoxContainer/vb_BuyTickets/vb_Content"]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+theme_override_font_sizes/font_size = 42
+text = "Standard"
+metadata/_edit_use_anchors_ = true
+
+[node name="btn_YouthTicket" type="Button" parent="Control/panel_Center/content_Wallet/content_Account/HBoxContainer/vb_BuyTickets/vb_Content"]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+theme_override_font_sizes/font_size = 42
+text = "Youth/Student"
+metadata/_edit_use_anchors_ = true
+
+[node name="btn_AdvantAgeTicket" type="Button" parent="Control/panel_Center/content_Wallet/content_Account/HBoxContainer/vb_BuyTickets/vb_Content"]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+theme_override_font_sizes/font_size = 42
+text = "AdvantAge"
+metadata/_edit_use_anchors_ = true
+
+[node name="vb_MyTickets" type="VBoxContainer" parent="Control/panel_Center/content_Wallet/content_Account/HBoxContainer"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 10
+metadata/_edit_use_anchors_ = true
+
+[node name="label_Title" type="Label" parent="Control/panel_Center/content_Wallet/content_Account/HBoxContainer/vb_MyTickets"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "My Tickets"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="vb_Tickets" type="VBoxContainer" parent="Control/panel_Center/content_Wallet/content_Account/HBoxContainer/vb_MyTickets"]
+layout_mode = 2
+
+[node name="label_Info" type="Label" parent="Control/panel_Center/content_Wallet/content_Account/HBoxContainer/vb_MyTickets/vb_Tickets"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "No active tickets"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="vb_MyDevices" type="VBoxContainer" parent="Control/panel_Center/content_Wallet/content_Account/HBoxContainer"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 10
+metadata/_edit_use_anchors_ = true
+
+[node name="label_Title" type="Label" parent="Control/panel_Center/content_Wallet/content_Account/HBoxContainer/vb_MyDevices"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "My Devices"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="vb_Devices" type="VBoxContainer" parent="Control/panel_Center/content_Wallet/content_Account/HBoxContainer/vb_MyDevices"]
+layout_mode = 2
+
+[node name="label_Info" type="Label" parent="Control/panel_Center/content_Wallet/content_Account/HBoxContainer/vb_MyDevices/vb_Devices"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "No other device sessions"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="vb_ExpiredTickets" type="VBoxContainer" parent="Control/panel_Center/content_Wallet/content_Account/HBoxContainer"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 10
+metadata/_edit_use_anchors_ = true
+
+[node name="label_Title" type="Label" parent="Control/panel_Center/content_Wallet/content_Account/HBoxContainer/vb_ExpiredTickets"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "Expired Tickets"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="vb_Tickets" type="VBoxContainer" parent="Control/panel_Center/content_Wallet/content_Account/HBoxContainer/vb_ExpiredTickets"]
+layout_mode = 2
+
+[node name="label_Info" type="Label" parent="Control/panel_Center/content_Wallet/content_Account/HBoxContainer/vb_ExpiredTickets/vb_Tickets"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "No expired tickets"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="vb_OrderHistory" type="VBoxContainer" parent="Control/panel_Center/content_Wallet/content_Account/HBoxContainer"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 10
+metadata/_edit_use_anchors_ = true
+
+[node name="label_Title" type="Label" parent="Control/panel_Center/content_Wallet/content_Account/HBoxContainer/vb_OrderHistory"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "Order History"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="vb_Orders" type="VBoxContainer" parent="Control/panel_Center/content_Wallet/content_Account/HBoxContainer/vb_OrderHistory"]
+layout_mode = 2
+
+[node name="label_Info" type="Label" parent="Control/panel_Center/content_Wallet/content_Account/HBoxContainer/vb_OrderHistory/vb_Orders"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "No history of orders"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="vb_ChangePassword" type="VBoxContainer" parent="Control/panel_Center/content_Wallet/content_Account/HBoxContainer"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 10
+metadata/_edit_use_anchors_ = true
+
+[node name="label_Title" type="Label" parent="Control/panel_Center/content_Wallet/content_Account/HBoxContainer/vb_ChangePassword"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "Change Password"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="vb_Content" type="VBoxContainer" parent="Control/panel_Center/content_Wallet/content_Account/HBoxContainer/vb_ChangePassword"]
+layout_mode = 2
+theme_override_constants/separation = 10
+metadata/_edit_use_anchors_ = true
+
+[node name="label_Info" type="Label" parent="Control/panel_Center/content_Wallet/content_Account/HBoxContainer/vb_ChangePassword/vb_Content"]
+visible = false
+layout_mode = 2
+theme_override_font_sizes/font_size = 15
+text = "Enter your login credidentials"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="le_Email" type="LineEdit" parent="Control/panel_Center/content_Wallet/content_Account/HBoxContainer/vb_ChangePassword/vb_Content"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+placeholder_text = "Email"
+
+[node name="le_Password" type="LineEdit" parent="Control/panel_Center/content_Wallet/content_Account/HBoxContainer/vb_ChangePassword/vb_Content"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+placeholder_text = "Current Password"
+
+[node name="hb_NewPassword" type="HBoxContainer" parent="Control/panel_Center/content_Wallet/content_Account/HBoxContainer/vb_ChangePassword/vb_Content"]
+layout_mode = 2
+
+[node name="le_NewPassword" type="LineEdit" parent="Control/panel_Center/content_Wallet/content_Account/HBoxContainer/vb_ChangePassword/vb_Content/hb_NewPassword"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "New Password"
+
+[node name="le_NewPasswordConfirm" type="LineEdit" parent="Control/panel_Center/content_Wallet/content_Account/HBoxContainer/vb_ChangePassword/vb_Content/hb_NewPassword"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Confirm New Password"
+
+[node name="btn_SavePassword" type="Button" parent="Control/panel_Center/content_Wallet/content_Account/HBoxContainer/vb_ChangePassword/vb_Content"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+text = "Save"
+metadata/_edit_use_anchors_ = true
+
+[node name="vb_AccountLogout" type="VBoxContainer" parent="Control/panel_Center/content_Wallet/content_Account/HBoxContainer"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 10
+metadata/_edit_use_anchors_ = true
+
+[node name="label_Title" type="Label" parent="Control/panel_Center/content_Wallet/content_Account/HBoxContainer/vb_AccountLogout"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "Logging Out"
+horizontal_alignment = 1
 vertical_alignment = 1
 metadata/_edit_use_anchors_ = true
 
@@ -1053,6 +1440,15 @@ metadata/_edit_use_anchors_ = true
 [connection signal="value_changed" from="Control/panel_Center/content_Explore/MapNav/VBoxContainer/vs_Zoom" to="." method="_on_vs_zoom_value_changed"]
 [connection signal="pressed" from="Control/panel_Center/content_Explore/MapNav/VBoxContainer/btn_Location3" to="." method="_on_btn_location_pressed"]
 [connection signal="pressed" from="Control/panel_Center/content_Wallet/content_Login/VBoxContainer/btn_Login" to="." method="_on_btn_login_pressed"]
+[connection signal="pressed" from="Control/panel_Center/content_Wallet/content_Account/HBoxContainer/vb_Navigation/btn_AccountHome" to="." method="_on_btn_account_home_pressed"]
+[connection signal="pressed" from="Control/panel_Center/content_Wallet/content_Account/HBoxContainer/vb_Navigation/btn_ManagePayments" to="." method="_on_btn_manage_payments_pressed"]
+[connection signal="pressed" from="Control/panel_Center/content_Wallet/content_Account/HBoxContainer/vb_Navigation/btn_BuyTickets" to="." method="_on_btn_buy_tickets_pressed"]
+[connection signal="pressed" from="Control/panel_Center/content_Wallet/content_Account/HBoxContainer/vb_Navigation/btn_MyTickets" to="." method="_on_btn_my_tickets_pressed"]
+[connection signal="pressed" from="Control/panel_Center/content_Wallet/content_Account/HBoxContainer/vb_Navigation/btn_MyDevices" to="." method="_on_btn_my_devices_pressed"]
+[connection signal="pressed" from="Control/panel_Center/content_Wallet/content_Account/HBoxContainer/vb_Navigation/btn_ExpiredTickets" to="." method="_on_btn_expired_tickets_pressed"]
+[connection signal="pressed" from="Control/panel_Center/content_Wallet/content_Account/HBoxContainer/vb_Navigation/btn_OrderHistory" to="." method="_on_btn_order_history_pressed"]
+[connection signal="pressed" from="Control/panel_Center/content_Wallet/content_Account/HBoxContainer/vb_Navigation/btn_ChangePassword" to="." method="_on_btn_change_password_pressed"]
+[connection signal="pressed" from="Control/panel_Center/content_Wallet/content_Account/HBoxContainer/vb_Navigation/btn_AccountLogout" to="." method="_on_btn_account_logout_pressed"]
 [connection signal="item_selected" from="Control/panel_Center/content_Settings/VBoxContainer/ob_MapProvider" to="." method="_on_ob_map_provider_item_selected"]
 [connection signal="item_selected" from="Control/panel_Center/content_Settings/VBoxContainer/ob_LocationProvider" to="." method="_on_ob_location_provider_item_selected"]
 [connection signal="pressed" from="Control/panel_Center/content_Settings/VBoxContainer/hb_OtherSettingsNav/btn_OtherSettingsBack" to="." method="_on_btn_other_settings_back_pressed"]
