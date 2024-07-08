@@ -68,6 +68,7 @@ func _ready():
 		).on_failure(
 			func( _response ): print("Failure to GET_FEED")
 		).fetch()
+		MAP.refresh_points()
 
 func ui_refresh_loop():
 	while true:
@@ -141,7 +142,6 @@ func refresh_transit():
 		$Control/panel_Center/content_Routes/VBoxContainer/label_Error.text = "COULD NOT RETRIEVE TRANSIT DATA\nCHECK INTERNET CONNECTION"
 		$Control/panel_Center/content_Routes/VBoxContainer/label_Error.visible = true
 		$Control/panel_Center/content_Routes/VBoxContainer/tr_Error.visible = true
-	MAP.refresh_points()
 
 func load_data():
 	if FileAccess.file_exists("user://user_data.json"):
