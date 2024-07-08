@@ -78,7 +78,7 @@ corner_radius_bottom_right = 15
 corner_radius_bottom_left = 15
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_em4ij"]
-bg_color = Color(0.250818, 0.250818, 0.250818, 0.956863)
+bg_color = Color(0.116127, 0.116127, 0.116127, 0.956863)
 corner_radius_top_left = 15
 corner_radius_top_right = 15
 corner_radius_bottom_right = 15
@@ -523,6 +523,7 @@ size_flags_vertical = 4
 focus_mode = 0
 theme_override_font_sizes/font_size = 24
 theme_override_styles/normal = SubResource("StyleBoxFlat_ax50q")
+theme_override_styles/hover = SubResource("StyleBoxFlat_ax50q")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_em4ij")
 toggle_mode = true
 text = "Favorite Routes"
@@ -539,7 +540,9 @@ size_flags_vertical = 4
 focus_mode = 0
 theme_override_font_sizes/font_size = 24
 theme_override_styles/normal = SubResource("StyleBoxFlat_ax50q")
+theme_override_styles/hover = SubResource("StyleBoxFlat_ax50q")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_em4ij")
+theme_override_styles/focus = SubResource("StyleBoxFlat_em4ij")
 toggle_mode = true
 text = "Saved Locations"
 icon_alignment = 1
@@ -1144,7 +1147,7 @@ layout_mode = 2
 text = "1"
 horizontal_alignment = 1
 
-[node name="HSlider" type="HSlider" parent="Control/panel_Center/content_Settings/VBoxContainer/hb_MaxRequests"]
+[node name="hs_MaximumRequests" type="HSlider" parent="Control/panel_Center/content_Settings/VBoxContainer/hb_MaxRequests"]
 custom_minimum_size = Vector2(342, 30)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -1177,7 +1180,7 @@ layout_mode = 2
 text = "1"
 horizontal_alignment = 1
 
-[node name="HSlider" type="HSlider" parent="Control/panel_Center/content_Settings/VBoxContainer/hb_DataInterval"]
+[node name="hs_DataInterval" type="HSlider" parent="Control/panel_Center/content_Settings/VBoxContainer/hb_DataInterval"]
 custom_minimum_size = Vector2(342, 30)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -1473,6 +1476,8 @@ metadata/_edit_use_anchors_ = true
 [connection signal="tile_loaded" from="Control/panel_Center/content_Explore/Map/VBoxContainer/SubViewportContainer/SubViewport/Map/MapTileLoader" to="Control/panel_Center/content_Explore/Map/VBoxContainer/SubViewportContainer/SubViewport/Map" method="_on_tile_loaded"]
 [connection signal="value_changed" from="Control/panel_Center/content_Explore/MapNav/VBoxContainer/vs_Zoom" to="." method="_on_vs_zoom_value_changed"]
 [connection signal="pressed" from="Control/panel_Center/content_Explore/MapNav/VBoxContainer/btn_Location3" to="." method="_on_btn_location_pressed"]
+[connection signal="toggled" from="Control/panel_Center/content_Routes/VBoxContainer/HBoxContainer/btn_FavoriteRoutes" to="." method="_on_btn_favorite_routes_toggled"]
+[connection signal="toggled" from="Control/panel_Center/content_Routes/VBoxContainer/HBoxContainer/btn_SavedLocations" to="." method="_on_btn_saved_locations_toggled"]
 [connection signal="pressed" from="Control/panel_Center/content_Wallet/content_Login/VBoxContainer/btn_Login" to="." method="_on_btn_login_pressed"]
 [connection signal="pressed" from="Control/panel_Center/content_Wallet/content_Account/HBoxContainer/vb_Navigation/btn_AccountHome" to="." method="_on_btn_account_home_pressed"]
 [connection signal="pressed" from="Control/panel_Center/content_Wallet/content_Account/HBoxContainer/vb_Navigation/btn_ManagePayments" to="." method="_on_btn_manage_payments_pressed"]
@@ -1483,6 +1488,8 @@ metadata/_edit_use_anchors_ = true
 [connection signal="pressed" from="Control/panel_Center/content_Wallet/content_Account/HBoxContainer/vb_Navigation/btn_OrderHistory" to="." method="_on_btn_order_history_pressed"]
 [connection signal="pressed" from="Control/panel_Center/content_Wallet/content_Account/HBoxContainer/vb_Navigation/btn_ChangePassword" to="." method="_on_btn_change_password_pressed"]
 [connection signal="pressed" from="Control/panel_Center/content_Wallet/content_Account/HBoxContainer/vb_Navigation/btn_AccountLogout" to="." method="_on_btn_account_logout_pressed"]
+[connection signal="value_changed" from="Control/panel_Center/content_Settings/VBoxContainer/hb_MaxRequests/hs_MaximumRequests" to="." method="_on_hs_maximum_requests_value_changed"]
+[connection signal="value_changed" from="Control/panel_Center/content_Settings/VBoxContainer/hb_DataInterval/hs_DataInterval" to="." method="_on_hs_data_interval_value_changed"]
 [connection signal="item_selected" from="Control/panel_Center/content_Settings/VBoxContainer/ob_MapProvider" to="." method="_on_ob_map_provider_item_selected"]
 [connection signal="item_selected" from="Control/panel_Center/content_Settings/VBoxContainer/ob_LocationProvider" to="." method="_on_ob_location_provider_item_selected"]
 [connection signal="pressed" from="Control/panel_Center/content_Settings/VBoxContainer/hb_OtherSettingsNav/btn_OtherSettingsBack" to="." method="_on_btn_other_settings_back_pressed"]

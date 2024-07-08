@@ -19,7 +19,7 @@ var http_requests = {
 }
 var http_occupied = false
 
-@onready var user_data = {"update_vehicle_positions": true, "lastKnownLocation": null, "map_provider": [0, MAP_LOADER.Provider.JAWG], "location_provider": [0, "FUSED"]}
+@onready var user_data = {"entity_pagination_limit": 8, "max_requests": 10, "data_update_interval": 1, "update_vehicle_positions": true, "lastKnownLocation": null, "map_provider": [0, MAP_LOADER.Provider.JAWG], "location_provider": [0, "FUSED"]}
 
 func _ready():
 	print(friendly_name)
@@ -58,8 +58,9 @@ func _ready():
 	#if Engine.has_singleton("Geolocation"):
 		#var singleton = Engine.get_singleton("Geolocation")
 		#singleton.helloWorld()
+	ui_refresh_loop()
 	while true:
-		await get_tree().create_timer(1).timeout # ideally every half minute plus one
+		await get_tree().create_timer(user_data["data_update_interval"]).timeout # ideally every half minute plus one
 		$HTTPManager.job(
 		host+"/get_feed/"
 		).on_success(
@@ -67,53 +68,80 @@ func _ready():
 		).on_failure(
 			func( _response ): print("Failure to GET_FEED")
 		).fetch()
-		
-		if lastFeed != null:
-			#$Control/panel_Center/content_Routes/VBoxContainer/ScrollContainer.visible = true
-			$Control/panel_Center/content_Routes/VBoxContainer/label_Error.visible = false
-			$Control/panel_Center/content_Routes/VBoxContainer/tr_Error.visible = false
-			if lastFeed["VehiclePositions"].has("entity"):
-				var vec = lastFeed["VehiclePositions"]["entity"]
-				vec.resize(8) # limits vehicles, need to optimize pins
-				lastFeed["VehiclePositions"]["entity"] = vec
-				for entity in lastFeed["VehiclePositions"]["entity"]:
-					if entity != null:
-						var routeId = entity["vehicle"]["trip"]["routeId"]
-						var infonode
-						if $Control/panel_Center/content_Routes/VBoxContainer/ScrollContainer/GridContainer.has_node(entity["id"]):
-							infonode = $Control/panel_Center/content_Routes/VBoxContainer/ScrollContainer/GridContainer.get_node(entity["id"])
+
+func ui_refresh_loop():
+	while true:
+		await get_tree().create_timer(0.1).timeout
+		refresh_transit()
+
+func refresh_transit():
+	if lastFeed != null:
+		#$Control/panel_Center/content_Routes/VBoxContainer/ScrollContainer.visible = true
+		$Control/panel_Center/content_Routes/VBoxContainer/label_Error.visible = false
+		$Control/panel_Center/content_Routes/VBoxContainer/tr_Error.visible = false
+		if lastFeed["VehiclePositions"].has("entity"):
+			var vec = lastFeed["VehiclePositions"]["entity"]
+			vec.resize(user_data["entity_pagination_limit"]) # limits vehicles, need to optimize pins
+			lastFeed["VehiclePositions"]["entity"] = vec
+			for entity in lastFeed["VehiclePositions"]["entity"]:
+				if entity != null:
+					var routeId = entity["vehicle"]["trip"]["routeId"]
+					var infonode
+					var routenode
+					if $Control/panel_Center/content_Routes/VBoxContainer/ScrollContainer/GridContainer.has_node(routeId):
+						routenode = $Control/panel_Center/content_Routes/VBoxContainer/ScrollContainer/GridContainer.get_node(routeId)
+					else:
+						routenode = preload("res://scenes/route.tscn").instantiate()
+						routenode.name = routeId
+						routenode.get_node("Route/HBoxContainer/Control/label_Route").text = transit_data["routes"][routeId]["route_short_name"]
+						routenode.get_node("Route/HBoxContainer/Control2/label_Route").text = transit_data["routes"][routeId]["route_long_name"]
+						if user_data.has("favorite_routes"):
+							if user_data["favorite_routes"].has(routeId):
+								routenode.get_node("Route/HBoxContainer/Control3/btn_FavoriteRoute").button_pressed = true
+						$Control/panel_Center/content_Routes/VBoxContainer/ScrollContainer/GridContainer.add_child(routenode)
+					if $Control/panel_Center/content_Routes/VBoxContainer/ScrollContainer/GridContainer.get_node(routeId).has_node(entity["id"]):
+						infonode = $Control/panel_Center/content_Routes/VBoxContainer/ScrollContainer/GridContainer.get_node(routeId).get_node(entity["id"])
+					else:
+						infonode = preload("res://scenes/vehicle.tscn").instantiate()
+						infonode.visible = false
+						infonode.name = entity["id"]
+						$Control/panel_Center/content_Routes/VBoxContainer/ScrollContainer/GridContainer.get_node(routeId).add_child(infonode)
+					infonode.get_node("HBoxContainer/Control2/label_Coords").text = str(entity["vehicle"]["position"]["latitude"])+", "+str(entity["vehicle"]["position"]["longitude"])
+					infonode.coords = [entity["vehicle"]["position"]["latitude"], entity["vehicle"]["position"]["longitude"]]
+					if transit_data["routes"].has(routeId):
+						infonode.get_node("HBoxContainer/Control2/HBoxContainer/label_Vehicle").text = "Vehicle "+entity["id"]
+					#else:
+					#	print(routeId)
+					routenode.visible = false
+					if $Control/panel_Center/content_Routes/VBoxContainer/HBoxContainer/btn_FavoriteRoutes.button_pressed:
+						if user_data.has("favorite_routes"):
+							if user_data["favorite_routes"].has(routeId):
+								routenode.visible = true
+					elif $Control/panel_Center/content_Routes/VBoxContainer/HBoxContainer/btn_SavedLocations.button_pressed:
+						if user_data.has("saved_locations"):
+							pass
+					else:
+						routenode.visible = true
+					
+					if user_data["update_vehicle_positions"] and $Control/panel_Center/content_Explore.visible:
+						if MAP.get("points").has("Vehicle "+entity["id"]):
+							var step = Vector2(256, 256)
+							var coords = MAP_LOADER.gps_to_tile(entity["vehicle"]["position"]["latitude"], entity["vehicle"]["position"]["longitude"], MAP.zoom) # can change zoom to max 22? then it has fine point? NO
+							MAP.points["Vehicle "+entity["id"]]["coords"] = Vector2(step.x * coords.x, step.y * coords.y)
 						else:
-							infonode = preload("res://scenes/vehicle.tscn").instantiate()
-							infonode.name = entity["id"]
-							$Control/panel_Center/content_Routes/VBoxContainer/ScrollContainer/GridContainer.add_child(infonode)
-						infonode.get_node("HBoxContainer/Control2/label_Coords").text = str(entity["vehicle"]["position"]["latitude"])+", "+str(entity["vehicle"]["position"]["longitude"])
-						
-						if transit_data["routes"].has(routeId):
-							infonode.get_node("HBoxContainer/Control/label_Route").text = transit_data["routes"][routeId]["route_short_name"]
-							infonode.get_node("HBoxContainer/Control2/label_RouteB").text = transit_data["routes"][routeId]["route_long_name"]
-							infonode.get_node("HBoxContainer/Control2/label_RouteA").text = "Vehicle "+entity["id"]
-						#else:
-						#	print(routeId)
-						
-						if user_data["update_vehicle_positions"]:
-							if MAP.get("points").has("Vehicle "+entity["id"]):
-								var step = Vector2(256, 256)
-								var coords = MAP_LOADER.gps_to_tile(entity["vehicle"]["position"]["latitude"], entity["vehicle"]["position"]["longitude"], MAP.zoom) # can change zoom to max 22? then it has fine point? NO
-								MAP.points["Vehicle "+entity["id"]]["coords"] = Vector2(step.x * coords.x, step.y * coords.y)
-							else:
-								var step = Vector2(256, 256)
-								var coords = MAP_LOADER.gps_to_tile(entity["vehicle"]["position"]["latitude"], entity["vehicle"]["position"]["longitude"], MAP.zoom)
-								#for zoom in MAP._zooms:
-								MAP.points["Vehicle "+entity["id"]] = {"coords": Vector2(step.x * coords.x, step.y * coords.y), "sprite": "bus", "color": Color.WHITE, "label": "Bus "+transit_data["routes"][routeId]["route_short_name"]}
-			else:
-				$Control/panel_Center/content_Routes/VBoxContainer/label_Error.text = "No vehicles are in operation at this time."
-				$Control/panel_Center/content_Routes/VBoxContainer/label_Error.visible = true
-				$Control/panel_Center/content_Routes/VBoxContainer/tr_Error.visible = true
+							var step = Vector2(256, 256)
+							var coords = MAP_LOADER.gps_to_tile(entity["vehicle"]["position"]["latitude"], entity["vehicle"]["position"]["longitude"], MAP.zoom)
+							#for zoom in MAP._zooms:
+							MAP.points["Vehicle "+entity["id"]] = {"coords": Vector2(step.x * coords.x, step.y * coords.y), "sprite": "bus", "color": Color.WHITE, "label": "Bus "+transit_data["routes"][routeId]["route_short_name"]}
 		else:
-			$Control/panel_Center/content_Routes/VBoxContainer/label_Error.text = "COULD NOT RETRIEVE TRANSIT DATA\nCHECK INTERNET CONNECTION"
+			$Control/panel_Center/content_Routes/VBoxContainer/label_Error.text = "No vehicles are in operation at this time."
 			$Control/panel_Center/content_Routes/VBoxContainer/label_Error.visible = true
 			$Control/panel_Center/content_Routes/VBoxContainer/tr_Error.visible = true
-		MAP.refresh_points()
+	else:
+		$Control/panel_Center/content_Routes/VBoxContainer/label_Error.text = "COULD NOT RETRIEVE TRANSIT DATA\nCHECK INTERNET CONNECTION"
+		$Control/panel_Center/content_Routes/VBoxContainer/label_Error.visible = true
+		$Control/panel_Center/content_Routes/VBoxContainer/tr_Error.visible = true
+	MAP.refresh_points()
 
 func load_data():
 	if FileAccess.file_exists("user://user_data.json"):
@@ -124,6 +152,9 @@ func load_data():
 	$Control/panel_Center/content_Settings/VBoxContainer/ob_MapProvider.select(user_data["map_provider"][0])
 	MAP_LOADER.tile_provider = user_data["map_provider"][1]
 	$Control/panel_Center/content_Settings/VBoxContainer/ob_LocationProvider.select(user_data["location_provider"][0])
+	$Control/panel_Center/content_Settings/VBoxContainer/hb_MaxRequests/hs_MaximumRequests.value = user_data["max_requests"]
+	MAP_LOADER.concurrent_requests = user_data["max_requests"]
+	$Control/panel_Center/content_Settings/VBoxContainer/hb_DataInterval/hs_DataInterval.value = user_data["data_update_interval"]
 	#if Engine.has_singleton("Geolocation"):
 		#geolocation_api.set_location_provider(user_data["location_provider"][1])
 	if user_data.has("transit_account"):
@@ -465,3 +496,20 @@ func _on_btn_account_logout_pressed():
 	$Control/panel_Center/content_Wallet/content_Login/VBoxContainer/le_Email.editable = true
 	$Control/panel_Center/content_Wallet/content_Login/VBoxContainer/le_Password.editable = true
 	$Control/panel_Center/content_Wallet/content_Login/VBoxContainer/btn_Login.disabled = false
+
+func _on_btn_favorite_routes_toggled(toggled_on):
+	if toggled_on:
+		$Control/panel_Center/content_Routes/VBoxContainer/HBoxContainer/btn_SavedLocations.button_pressed = false
+
+func _on_btn_saved_locations_toggled(toggled_on):
+	if toggled_on:
+		$Control/panel_Center/content_Routes/VBoxContainer/HBoxContainer/btn_FavoriteRoutes.button_pressed = false
+
+func _on_hs_maximum_requests_value_changed(value):
+	user_data["max_requests"] = value
+	MAP_LOADER.concurrent_requests = value
+	save_data()
+
+func _on_hs_data_interval_value_changed(value):
+	user_data["data_update_interval"] = value
+	save_data()
