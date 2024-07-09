@@ -579,6 +579,66 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/v_separation = 3
 
+[node name="HBoxContainer2" type="HBoxContainer" parent="Control/panel_Center/content_Routes/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/separation = 20
+alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="btn_BackRoutes" type="Button" parent="Control/panel_Center/content_Routes/VBoxContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(300, 50)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+focus_mode = 0
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_ax50q")
+theme_override_styles/hover = SubResource("StyleBoxFlat_ax50q")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_em4ij")
+disabled = true
+text = "Back"
+icon_alignment = 1
+expand_icon = true
+metadata/_edit_group_ = true
+metadata/_edit_use_anchors_ = true
+
+[node name="btn_MoreRoutes" type="Button" parent="Control/panel_Center/content_Routes/VBoxContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(300, 50)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+focus_mode = 0
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_ax50q")
+theme_override_styles/hover = SubResource("StyleBoxFlat_ax50q")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_em4ij")
+theme_override_styles/focus = SubResource("StyleBoxFlat_em4ij")
+disabled = true
+text = "Next"
+icon_alignment = 1
+expand_icon = true
+metadata/_edit_group_ = true
+metadata/_edit_use_anchors_ = true
+
+[node name="lb" type="Label" parent="Control/panel_Center/content_Routes/VBoxContainer"]
+layout_mode = 2
+mouse_filter = 1
+theme_override_colors/font_color = Color(0.929412, 0.368627, 0, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 1
+horizontal_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="lb2" type="Label" parent="Control/panel_Center/content_Routes/VBoxContainer"]
+layout_mode = 2
+mouse_filter = 1
+theme_override_colors/font_color = Color(0.929412, 0.368627, 0, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 1
+horizontal_alignment = 1
+metadata/_edit_use_anchors_ = true
+
 [node name="content_Wallet" type="Control" parent="Control/panel_Center"]
 visible = false
 layout_mode = 1
@@ -1478,6 +1538,8 @@ metadata/_edit_use_anchors_ = true
 [connection signal="pressed" from="Control/panel_Center/content_Explore/MapNav/VBoxContainer/btn_Location3" to="." method="_on_btn_location_pressed"]
 [connection signal="toggled" from="Control/panel_Center/content_Routes/VBoxContainer/HBoxContainer/btn_FavoriteRoutes" to="." method="_on_btn_favorite_routes_toggled"]
 [connection signal="toggled" from="Control/panel_Center/content_Routes/VBoxContainer/HBoxContainer/btn_SavedLocations" to="." method="_on_btn_saved_locations_toggled"]
+[connection signal="pressed" from="Control/panel_Center/content_Routes/VBoxContainer/HBoxContainer2/btn_BackRoutes" to="." method="_on_btn_back_routes_pressed"]
+[connection signal="pressed" from="Control/panel_Center/content_Routes/VBoxContainer/HBoxContainer2/btn_MoreRoutes" to="." method="_on_btn_more_routes_pressed"]
 [connection signal="pressed" from="Control/panel_Center/content_Wallet/content_Login/VBoxContainer/btn_Login" to="." method="_on_btn_login_pressed"]
 [connection signal="pressed" from="Control/panel_Center/content_Wallet/content_Account/HBoxContainer/vb_Navigation/btn_AccountHome" to="." method="_on_btn_account_home_pressed"]
 [connection signal="pressed" from="Control/panel_Center/content_Wallet/content_Account/HBoxContainer/vb_Navigation/btn_ManagePayments" to="." method="_on_btn_manage_payments_pressed"]

@@ -75,16 +75,21 @@ func ui_refresh_loop():
 		await get_tree().create_timer(0.1).timeout
 		refresh_transit()
 
+var routes_page = 1
+
 func refresh_transit():
 	if lastFeed != null:
 		#$Control/panel_Center/content_Routes/VBoxContainer/ScrollContainer.visible = true
 		$Control/panel_Center/content_Routes/VBoxContainer/label_Error.visible = false
 		$Control/panel_Center/content_Routes/VBoxContainer/tr_Error.visible = false
+		$Control/panel_Center/content_Routes/VBoxContainer/HBoxContainer2.visible = true
 		if lastFeed["VehiclePositions"].has("entity"):
-			var vec = lastFeed["VehiclePositions"]["entity"]
-			vec.resize(user_data["entity_pagination_limit"]) # limits vehicles, need to optimize pins
-			lastFeed["VehiclePositions"]["entity"] = vec
-			for entity in lastFeed["VehiclePositions"]["entity"]:
+			var all_data = lastFeed["VehiclePositions"]["entity"].duplicate()
+			#var start_index = (routes_page - 1) * user_data["entity_pagination_limit"]
+			#var end_index = start_index + user_data["entity_pagination_limit"]
+			#var paginized_data = all_data.slice(start_index, end_index)
+			all_data.resize(user_data["entity_pagination_limit"])
+			for entity in all_data:
 				if entity != null:
 					var routeId = entity["vehicle"]["trip"]["routeId"]
 					var infonode
@@ -138,10 +143,12 @@ func refresh_transit():
 			$Control/panel_Center/content_Routes/VBoxContainer/label_Error.text = "No vehicles are in operation at this time."
 			$Control/panel_Center/content_Routes/VBoxContainer/label_Error.visible = true
 			$Control/panel_Center/content_Routes/VBoxContainer/tr_Error.visible = true
+			$Control/panel_Center/content_Routes/VBoxContainer/HBoxContainer2.visible = false
 	else:
 		$Control/panel_Center/content_Routes/VBoxContainer/label_Error.text = "COULD NOT RETRIEVE TRANSIT DATA\nCHECK INTERNET CONNECTION"
 		$Control/panel_Center/content_Routes/VBoxContainer/label_Error.visible = true
 		$Control/panel_Center/content_Routes/VBoxContainer/tr_Error.visible = true
+		$Control/panel_Center/content_Routes/VBoxContainer/HBoxContainer2.visible = false
 
 func load_data():
 	if FileAccess.file_exists("user://user_data.json"):
@@ -513,3 +520,10 @@ func _on_hs_maximum_requests_value_changed(value):
 func _on_hs_data_interval_value_changed(value):
 	user_data["data_update_interval"] = value
 	save_data()
+
+func _on_btn_back_routes_pressed():
+	if routes_page > 1:
+		routes_page -= 1
+
+func _on_btn_more_routes_pressed():
+	routes_page += 1
