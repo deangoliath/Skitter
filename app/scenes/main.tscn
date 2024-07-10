@@ -579,6 +579,15 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/v_separation = 3
 
+[node name="lb" type="Label" parent="Control/panel_Center/content_Routes/VBoxContainer"]
+layout_mode = 2
+mouse_filter = 1
+theme_override_colors/font_color = Color(0.929412, 0.368627, 0, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 1
+horizontal_alignment = 1
+metadata/_edit_use_anchors_ = true
+
 [node name="HBoxContainer2" type="HBoxContainer" parent="Control/panel_Center/content_Routes/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
@@ -621,7 +630,7 @@ expand_icon = true
 metadata/_edit_group_ = true
 metadata/_edit_use_anchors_ = true
 
-[node name="lb" type="Label" parent="Control/panel_Center/content_Routes/VBoxContainer"]
+[node name="lb2" type="Label" parent="Control/panel_Center/content_Routes/VBoxContainer"]
 layout_mode = 2
 mouse_filter = 1
 theme_override_colors/font_color = Color(0.929412, 0.368627, 0, 1)
@@ -630,7 +639,7 @@ theme_override_font_sizes/font_size = 1
 horizontal_alignment = 1
 metadata/_edit_use_anchors_ = true
 
-[node name="lb2" type="Label" parent="Control/panel_Center/content_Routes/VBoxContainer"]
+[node name="lb3" type="Label" parent="Control/panel_Center/content_Routes/VBoxContainer"]
 layout_mode = 2
 mouse_filter = 1
 theme_override_colors/font_color = Color(0.929412, 0.368627, 0, 1)
