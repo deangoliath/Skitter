@@ -11,12 +11,12 @@ config_version=5
 [application]
 
 config/name="OpenLynx"
-config/version="20240710.2"
+config/version="20240710.3"
 run/main_scene="res://scenes/main.tscn"
 config/features=PackedStringArray("4.2", "GL Compatibility")
 run/low_processor_mode=true
 boot_splash/show_image=false
-config/icon="res://assets/icons/android/masked/icon.png"
+config/icon="res://assets/icons/app/masked/icon.png"
 
 [autoload]
 
@@ -37,6 +37,7 @@ enabled=PackedStringArray("res://addons/HTTPManager/plugin.cfg", "res://addons/m
 [filesystem]
 
 import/blender/enabled=false
+import/fbx/enabled=false
 
 [input_devices]
 
