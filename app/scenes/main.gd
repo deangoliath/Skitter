@@ -19,7 +19,7 @@ var http_requests = {
 }
 var http_occupied = false
 
-@onready var user_data = {"entity_pagination_limit": 8, "max_requests": 10, "data_update_interval": 1, "update_vehicle_positions": true, "lastKnownLocation": null, "map_provider": [0, MAP_LOADER.Provider.JAWG], "location_provider": [0, "FUSED"]}
+@onready var user_data = {"entity_pagination_limit": 10, "max_requests": 10, "data_update_interval": 1, "update_vehicle_positions": true, "lastKnownLocation": null, "map_provider": [0, MAP_LOADER.Provider.JAWG], "location_provider": [0, "FUSED"]}
 
 func _ready():
 	print(friendly_name)
@@ -85,11 +85,10 @@ func refresh_transit():
 		$Control/panel_Center/content_Routes/VBoxContainer/HBoxContainer2.visible = true
 		if lastFeed["VehiclePositions"].has("entity"):
 			var all_data = lastFeed["VehiclePositions"]["entity"].duplicate()
-			#var start_index = (routes_page - 1) * user_data["entity_pagination_limit"]
-			#var end_index = start_index + user_data["entity_pagination_limit"]
-			#var paginized_data = all_data.slice(start_index, end_index)
-			all_data.resize(user_data["entity_pagination_limit"])
-			for entity in all_data:
+			var page_size = user_data["entity_pagination_limit"]
+			var paginized_data = all_data.slice((routes_page - 1) * page_size, routes_page * page_size)
+			#all_data.resize(user_data["entity_pagination_limit"])
+			for entity in paginized_data:
 				if entity != null:
 					var routeId = entity["vehicle"]["trip"]["routeId"]
 					var infonode
@@ -119,7 +118,10 @@ func refresh_transit():
 					#else:
 					#	print(routeId)
 					routenode.visible = false
-					if $Control/panel_Center/content_Routes/VBoxContainer/HBoxContainer/btn_FavoriteRoutes.button_pressed:
+					if $Control/panel_Center/content_Routes/VBoxContainer/le_Navigate.text != "":
+						if transit_data["routes"][routeId]["route_short_name"].contains($Control/panel_Center/content_Routes/VBoxContainer/le_Navigate.text):
+							routenode.visible = true
+					elif $Control/panel_Center/content_Routes/VBoxContainer/HBoxContainer/btn_FavoriteRoutes.button_pressed:
 						if user_data.has("favorite_routes"):
 							if user_data["favorite_routes"].has(routeId):
 								routenode.visible = true
@@ -524,6 +526,10 @@ func _on_hs_data_interval_value_changed(value):
 func _on_btn_back_routes_pressed():
 	if routes_page > 1:
 		routes_page -= 1
+	for child in $Control/panel_Center/content_Routes/VBoxContainer/ScrollContainer/GridContainer.get_children():
+		child.queue_free()
 
 func _on_btn_more_routes_pressed():
 	routes_page += 1
+	for child in $Control/panel_Center/content_Routes/VBoxContainer/ScrollContainer/GridContainer.get_children():
+		child.queue_free()
