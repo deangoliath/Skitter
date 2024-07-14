@@ -2,8 +2,8 @@ extends Node
 
 var transit_data = {"fare_attributes": {}, "fare_rules": {}, "routes": {}, "shapes": {}, "stops": {}, "stop_times": {}, "trips": {}}
 
-var host = "http://127.0.0.1:5000" # feel free to use the data provided please do not abuse
-var lastFeed
+var host = "http://149.130.216.105:5000" # feel free to use the data provided please do not abuse
+var lastFeed = {"ServiceAlerts": {}} #tripupdates=713.8kb,servicealerts=65b,vehiclepositions=44.6kb,,data size subject to change
 
 var geolocation_api:GeolocationWrapper
 var location_watcher:LocationWatcher
@@ -19,19 +19,21 @@ var http_requests = {
 }
 var http_occupied = false
 
-@onready var user_data = {"entity_pagination_limit": 10, "max_requests": 10, "data_update_interval": 5, "update_vehicle_positions": true, "lastKnownLocation": null, "map_provider": [0, MAP_LOADER.Provider.JAWG], "location_provider": [0, "FUSED"]}
+@onready var user_data = {"trip_updates_feed": false, "startup_autoload_map": false, "mobiledata_getfeed": true, "mobiledata_getmaps": true, "vehicle_positions_feed": true, "service_alerts_feed": true, "entity_pagination_limit": 10, "max_requests": 10, "data_update_interval": 5, "update_vehicle_positions": true, "lastKnownLocation": null, "map_provider": [0, MAP_LOADER.Provider.JAWG], "location_provider": [0, "FUSED"]}
 
 func _ready():
 	print(friendly_name)
 	load_data()
 	# check if internet connectivity here before issuing http requests
-	$HTTPManager.job(
-		host+"/get_feed/"
+	if user_data["vehicle_positions_feed"]:
+		$HTTPManager.job(
+		host+"/get_feed/vehicle_positions/"
 		).on_success(
-			func( _response ): lastFeed = _response.fetch()
+			func( _response ): lastFeed["VehiclePositions"] = _response.fetch()
 		).on_failure(
-			func( _response ): print("Failure to GET_FEED")
+			func( _response ): print("Failure to GET_FEED/VEHICLE_POSITIONS")
 		).fetch()
+		MAP.refresh_points()
 	$HTTPManager.job(
 		host+"/get_routes/"
 		).on_success(
@@ -61,14 +63,31 @@ func _ready():
 	ui_refresh_loop()
 	while true:
 		await get_tree().create_timer(user_data["data_update_interval"]).timeout # ideally every half minute plus one
-		$HTTPManager.job(
-		host+"/get_feed/"
-		).on_success(
-			func( _response ): lastFeed = _response.fetch()
-		).on_failure(
-			func( _response ): print("Failure to GET_FEED")
-		).fetch()
-		MAP.refresh_points()
+		if user_data["vehicle_positions_feed"]:
+			$HTTPManager.job(
+			host+"/get_feed/vehicle_positions/"
+			).on_success(
+				func( _response ): lastFeed["VehiclePositions"] = _response.fetch()
+			).on_failure(
+				func( _response ): print("Failure to GET_FEED/VEHICLE_POSITIONS")
+			).fetch()
+			MAP.refresh_points()
+		if user_data["service_alerts_feed"]:
+			$HTTPManager.job(
+			host+"/get_feed/service_alerts/"
+			).on_success(
+				func( _response ): lastFeed["ServiceAlerts"] = _response.fetch()
+			).on_failure(
+				func( _response ): print("Failure to GET_FEED/SERVICE_ALERTS")
+			).fetch()
+		if user_data["trip_updates_feed"]:
+			$HTTPManager.job(
+			host+"/get_feed/trip_updates/"
+			).on_success(
+				func( _response ): lastFeed["TripUpdates"] = _response.fetch()
+			).on_failure(
+				func( _response ): print("Failure to GET_FEED/TRIP_UPDATES")
+			).fetch()
 
 func ui_refresh_loop():
 	while true:
@@ -78,12 +97,12 @@ func ui_refresh_loop():
 var routes_page = 1
 
 func refresh_transit():
-	if lastFeed != null:
+	if lastFeed.has("VehiclePositions"):
 		#$Control/panel_Center/content_Routes/VBoxContainer/ScrollContainer.visible = true
 		$Control/panel_Center/content_Routes/VBoxContainer/label_Error.visible = false
 		$Control/panel_Center/content_Routes/VBoxContainer/tr_Error.visible = false
 		$Control/panel_Center/content_Routes/VBoxContainer/HBoxContainer2.visible = true
-		if lastFeed["VehiclePositions"].has("entity"):
+		if lastFeed["VehiclePositions"].has("entity"): # can also get all routes from get_routes
 			var all_data = lastFeed["VehiclePositions"]["entity"].duplicate()
 			var page_size = user_data["entity_pagination_limit"]
 			var paginized_data = all_data.slice((routes_page - 1) * page_size, routes_page * page_size)
@@ -155,7 +174,11 @@ func refresh_transit():
 func load_data():
 	if FileAccess.file_exists("user://user_data.json"):
 		var file = FileAccess.open("user://user_data.json", FileAccess.READ)
-		user_data = JSON.parse_string(file.get_as_text())
+		var temp_user_data = JSON.parse_string(file.get_as_text())
+		for key in user_data.keys():
+			if temp_user_data.has(key) == false:
+				temp_user_data[key] = user_data[key]
+		user_data = temp_user_data
 	else:
 		save_data()
 	$Control/panel_Center/content_Settings/VBoxContainer/ob_MapProvider.select(user_data["map_provider"][0])
@@ -164,6 +187,11 @@ func load_data():
 	$Control/panel_Center/content_Settings/VBoxContainer/hb_MaxRequests/hs_MaximumRequests.value = user_data["max_requests"]
 	MAP_LOADER.concurrent_requests = user_data["max_requests"]
 	$Control/panel_Center/content_Settings/VBoxContainer/hb_DataInterval/hs_DataInterval.value = user_data["data_update_interval"]
+	$Control/panel_Center/content_Settings/VBoxContainer/TabContainer/Tab1/cb_VehiclePositionsFeed.button_pressed = user_data["vehicle_positions_feed"]
+	$Control/panel_Center/content_Settings/VBoxContainer/TabContainer/Tab1/cb_ServiceAlertsFeed.button_pressed = user_data["service_alerts_feed"]
+	$Control/panel_Center/content_Settings/VBoxContainer/TabContainer/Tab1/cb_AutoloadMapStartup.button_pressed = user_data["startup_autoload_map"]
+	$Control/panel_Center/content_Settings/VBoxContainer/TabContainer/Tab1/cb_TransitInfoMobileData.button_pressed = user_data["mobiledata_getfeed"]
+	$Control/panel_Center/content_Settings/VBoxContainer/TabContainer/Tab1/cb_MapsMobileData.button_pressed = user_data["mobiledata_getmaps"]
 	#if Engine.has_singleton("Geolocation"):
 		#geolocation_api.set_location_provider(user_data["location_provider"][1])
 	if user_data.has("transit_account"):
@@ -177,7 +205,6 @@ func load_data():
 			"User-Agent", friendly_name
 		).on_success(
 			func( _response ):
-				print("barbie")
 				print(_response.fetch().split('Email Address:').size())
 				if _response.fetch().split('Email Address:').size() > 1:
 					var emailaddress = _response.fetch().split('Email Address:')[1].split('<div class="formContent">')[1].split('</div>')[0]

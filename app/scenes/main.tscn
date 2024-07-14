@@ -1385,6 +1385,7 @@ theme_override_constants/separation = 20
 [node name="cb_MapsMobileData" type="CheckButton" parent="Control/panel_Center/content_Settings/VBoxContainer/TabContainer/Tab1"]
 layout_mode = 2
 size_flags_horizontal = 0
+focus_mode = 0
 theme_override_constants/h_separation = -285
 disabled = true
 button_pressed = true
@@ -1395,6 +1396,7 @@ clip_text = true
 [node name="cb_TransitInfoMobileData" type="CheckButton" parent="Control/panel_Center/content_Settings/VBoxContainer/TabContainer/Tab1"]
 layout_mode = 2
 size_flags_horizontal = 0
+focus_mode = 0
 theme_override_constants/h_separation = -332
 disabled = true
 button_pressed = true
@@ -1403,17 +1405,42 @@ alignment = 2
 clip_text = true
 
 [node name="cb_ShowFavorites" type="CheckButton" parent="Control/panel_Center/content_Settings/VBoxContainer/TabContainer/Tab1"]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 0
+focus_mode = 0
 theme_override_constants/h_separation = -197
 disabled = true
 text = "Show Only Favorites"
 alignment = 2
 clip_text = true
 
+[node name="cb_VehiclePositionsFeed" type="CheckButton" parent="Control/panel_Center/content_Settings/VBoxContainer/TabContainer/Tab1"]
+layout_mode = 2
+size_flags_horizontal = 0
+focus_mode = 0
+theme_override_constants/h_separation = -212
+disabled = true
+button_pressed = true
+text = "Vehicle Positions Feed"
+alignment = 2
+clip_text = true
+
+[node name="cb_ServiceAlertsFeed" type="CheckButton" parent="Control/panel_Center/content_Settings/VBoxContainer/TabContainer/Tab1"]
+layout_mode = 2
+size_flags_horizontal = 0
+focus_mode = 0
+theme_override_constants/h_separation = -186
+disabled = true
+button_pressed = true
+text = "Service Alerts Feed"
+alignment = 2
+clip_text = true
+
 [node name="cb_AutoloadMapStartup" type="CheckButton" parent="Control/panel_Center/content_Settings/VBoxContainer/TabContainer/Tab1"]
 layout_mode = 2
 size_flags_horizontal = 0
+focus_mode = 0
 theme_override_constants/h_separation = -235
 disabled = true
 text = "Autoload Map on Startup"

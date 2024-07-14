@@ -27,7 +27,6 @@ feedRefresh = 30  # lynx live feed updates every 30 seconds
 def get_feed():
     return lastFeed
 
-
 def get_routes():  # should use memory or file operations? can overload server attack with too many file operation requests?
     routes_dict = {}
     with open("transit_server_data/transit_data/lynx/routes.txt", "r") as file:
@@ -41,6 +40,15 @@ def get_routes():  # should use memory or file operations? can overload server a
 
 def get_trips():
     return {}
+
+def get_trip_updates_feed():
+    return lastFeed["TripUpdates"]
+
+def get_service_alerts_feed():
+    return lastFeed["ServiceAlerts"]
+
+def get_vehicle_positions_feed():
+    return lastFeed["VehiclePositions"]
 
 def get_stops():
     return {}
@@ -97,13 +105,12 @@ def fetchdata_thread():
         )
         feed.ParseFromString(response.content)
         lastFeed["VehiclePositions"] = MessageToDict(feed)
-        # extra feed rounds up to 1.6mb, so only sticking with necessary for now
-        #response = requests.get("http://gtfsrt.golynx.com/gtfsrt/GTFS_TripUpdates.pb")
-        #feed.ParseFromString(response.content)
-        #lastFeed["TripUpdates"] = MessageToDict(feed)
-        #response = requests.get("http://gtfsrt.golynx.com/gtfsrt/GTFS_ServiceAlerts.pb")
-        #feed.ParseFromString(response.content)
-        #lastFeed["ServiceAlerts"] = MessageToDict(feed)
+        response = requests.get("http://gtfsrt.golynx.com/gtfsrt/GTFS_TripUpdates.pb")
+        feed.ParseFromString(response.content)
+        lastFeed["TripUpdates"] = MessageToDict(feed)
+        response = requests.get("http://gtfsrt.golynx.com/gtfsrt/GTFS_ServiceAlerts.pb")
+        feed.ParseFromString(response.content)
+        lastFeed["ServiceAlerts"] = MessageToDict(feed)
         time.sleep(feedRefresh)
 
 
@@ -129,21 +136,29 @@ app = Flask(__name__)
 def handle_index():
     return jsonify({"message": "Hello! This is a simple transit data relay server! Please do not abuse!", "source": "https://codeberg.org/JumpingPants/OpenLynx", "routes": ["/get_feed/", "/get_routes/"]})
 
-
 @app.route("/get_feed/")
 def handle_get_feed():
     return jsonify(get_feed())
-
 
 @app.route("/get_routes/")
 def handle_get_routes():
     return jsonify(get_routes())
 
-
 @app.route("/get_trips/")
 def handle_get_trips():
     return jsonify(get_trips())
 
+@app.route("/get_feed/trip_updates/")
+def handle_get_trip_updates_feed():
+    return jsonify(get_trip_updates_feed())
+
+@app.route("/get_feed/service_alerts/")
+def handle_get_service_alerts_feed():
+    return jsonify(get_service_alerts_feed())
+
+@app.route("/get_feed/vehicle_positions/")
+def handle_get_vehicle_positions_feed():
+    return jsonify(get_vehicle_positions_feed())
 
 @app.route("/get_stops/")
 def handle_get_stops():
