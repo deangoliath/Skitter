@@ -2,7 +2,7 @@ extends Node
 
 var transit_data = {"fare_attributes": {}, "fare_rules": {}, "routes": {}, "shapes": {}, "stops": {}, "stop_times": {}, "trips": {}}
 
-var host = "http://149.130.216.105:5000" # feel free to use the data provided please do not abuse
+var host = "http://127.0.0.1:5000" # feel free to use the data provided please do not abuse
 var lastFeed
 
 var geolocation_api:GeolocationWrapper
@@ -19,7 +19,7 @@ var http_requests = {
 }
 var http_occupied = false
 
-@onready var user_data = {"entity_pagination_limit": 10, "max_requests": 10, "data_update_interval": 1, "update_vehicle_positions": true, "lastKnownLocation": null, "map_provider": [0, MAP_LOADER.Provider.JAWG], "location_provider": [0, "FUSED"]}
+@onready var user_data = {"entity_pagination_limit": 10, "max_requests": 10, "data_update_interval": 5, "update_vehicle_positions": true, "lastKnownLocation": null, "map_provider": [0, MAP_LOADER.Provider.JAWG], "location_provider": [0, "FUSED"]}
 
 func _ready():
 	print(friendly_name)

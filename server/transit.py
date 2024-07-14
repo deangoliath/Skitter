@@ -97,12 +97,13 @@ def fetchdata_thread():
         )
         feed.ParseFromString(response.content)
         lastFeed["VehiclePositions"] = MessageToDict(feed)
-        response = requests.get("http://gtfsrt.golynx.com/gtfsrt/GTFS_TripUpdates.pb")
-        feed.ParseFromString(response.content)
-        lastFeed["TripUpdates"] = MessageToDict(feed)
-        response = requests.get("http://gtfsrt.golynx.com/gtfsrt/GTFS_ServiceAlerts.pb")
-        feed.ParseFromString(response.content)
-        lastFeed["ServiceAlerts"] = MessageToDict(feed)
+        # extra feed rounds up to 1.6mb, so only sticking with necessary for now
+        #response = requests.get("http://gtfsrt.golynx.com/gtfsrt/GTFS_TripUpdates.pb")
+        #feed.ParseFromString(response.content)
+        #lastFeed["TripUpdates"] = MessageToDict(feed)
+        #response = requests.get("http://gtfsrt.golynx.com/gtfsrt/GTFS_ServiceAlerts.pb")
+        #feed.ParseFromString(response.content)
+        #lastFeed["ServiceAlerts"] = MessageToDict(feed)
         time.sleep(feedRefresh)
 
 
