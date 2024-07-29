@@ -2,13 +2,16 @@
 
 A free application used for navigating the Lynx bus system in Orlando, Florida.
 
-This is not a map app. Please use OSMAND+ available on [F-Droid](https://f-droid.org/en/packages/net.osmand.plus/).
+This is not a map app. Please use [OSMAND+ from F-Droid](https://f-droid.org/en/packages/net.osmand.plus/) instead.
+
+[<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
+     alt="Get it on F-Droid"
+     height="80">](https://f-droid.org/packages/page.codeberg.jumpingpants.opentransit/)
 
 ## Features
 - Offline routing
 - Low data usage toggle
 - Limit bus tracking to specific routes
-
 
 ## Contributing
 Before you commit your changes, ensure the following checklist is completed:
