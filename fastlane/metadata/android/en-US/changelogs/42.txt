@@ -1,7 +1,0 @@
-+ toggle feed download settings
-+ automatically apply new user data keys
-+ other improvements
-
-This is an early version. If there is a feature wanted or a bug that has been found, send an email or open an issue on codeberg.
-
-Thank you for using my app! Enjoy, free of charge.
